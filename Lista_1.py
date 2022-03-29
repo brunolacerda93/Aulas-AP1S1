@@ -120,12 +120,68 @@ def ex_7():
 
 def ex_8():
     print("8. Dada uma string com uma frase informada pelo usuário (incluindo espaços em branco), conte a quantidade de espaços em branco e a quantidade de vezes que aparecem as vogais a, e, i, o, u.\n")
+    frase = input("Digite uma frase: ")
+    spc=0; a=0; e=0; i=0; o=0; u=0
+
+    for j in frase.strip():
+        if j == " ":
+            spc += 1
+        elif j == 'a' or j == 'A':
+            a += 1
+        elif j == 'e' or j == 'E':
+            e += 1
+        elif j == 'i' or j == 'I':
+            i += 1
+        elif j == 'o' or j == 'O':
+            o += 1
+        elif j == 'u' or j == 'U':
+            u += 1
+    
+    print("Na frase:", frase.strip(), "há", spc, "espaços em branco.")
+    print("A vogal 'A' aparece", a, "vez(es)")
+    print("A vogal 'E' aparece", e, "vez(es)")
+    print("A vogal 'I' aparece", i, "vez(es)")
+    print("A vogal 'O' aparece", o, "vez(es)")
+    print("A vogal 'U' aparece", u, "vez(es)")
 
 def ex_9():
     print("9. Um anagrama é uma palavra que é feita a partir da transposição das letras de outra palavra ou frase. Por exemplo, “Iracema” é um anagrama para “America”. Escreva um programa que decida se uma string é um anagrama de outra string, ignorando os espaços em branco. O programa deve considerar maiúsculas e minúsculas como sendo caracteres iguais, ou seja, “a” = “A”.\n")
+    NO_OF_CHARS = 256
+
+    frase1 = input("Digite uma frase: ")
+    frase2 = input("Digite uma frase: ")
+
+    count1 = [0] * NO_OF_CHARS
+    count2 = [0] * NO_OF_CHARS
+
+    for i in frase1.replace(" ", "").lower():
+        count1[ord(i)] += 1
+
+    for i in frase2.replace(" ", "").lower():
+        count2[ord(i)] += 1
+
+    flag = True
+    for i in range(NO_OF_CHARS):
+        if count1[i] != count2[i]:
+            flag = False
+            break
+
+    if flag:
+        print("As frases:\n", frase1, "\n", frase2, "\nSão anagramas!")
+    else:
+        print("As frases:\n", frase1, "\n", frase2, "\nNão são anagramas!")
 
 def ex_10():
     print("10. Escreva um programa que solicite ao usuário a entrada de um número inteiro positivo ou negativo e mostre a quantidade de dígitos desse número.\n")
+    num = int(input("Digite um número: "))
+    count = 0
+    n = num
+
+    while n>0:
+        n //= 10
+        count += 1
+
+    print("O número", num, "possui", count, "digitos")
 
 while True:
     system('cls')
