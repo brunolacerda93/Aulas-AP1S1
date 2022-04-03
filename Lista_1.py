@@ -1,7 +1,7 @@
 # Exercícios da Lista 1 de Algorítmos e Programação - ADS IFSP 01/2022
 
 from os import system
-from time import sleep
+# from time import sleep
 
 def timer():
     system('pause')
@@ -67,7 +67,7 @@ def ex_3():
         print("As frases são diferentes!")
 
     print("A primeira frase possui:", len(frase_1), "caracteres.")
-    print("A segunda frase possui :", len(frase_2), "caracteres.")
+    print("A segunda  frase possui:", len(frase_2), "caracteres.")
 
 def ex_4():
     print("4. Escreva um programa que reconhece se uma string é um palíndromo, ou seja, se lida do início para o fim é igual se lida do fim para o início. Exemplos: arara, ovo, reter, Renner e Miriam.\n")
