@@ -105,23 +105,23 @@ def ex_7():
     print(nota)
     
     print("\nNotas maiores ou iguais a 6.0:")
-    for i in range(len(nota)):
-        if nota[i] >= 6.0:
-            print("-", nota[i])
+    for i in nota:
+        if i >= 6.0:
+            print("-", i)
 
     print("\nNotas maiores ou iguais a 4.0 e menores do que 6.0:")
-    for i in range(len(nota)):
-        if nota[i] >= 4.0 and nota[i] < 6.0:
-            print("-", nota[i])
+    for i in nota:
+        if i >= 4.0 and i < 6.0:
+            print("-", i)
 
     print("\nNotas menores do que 4.0:")
-    for i in range(len(nota)):
-        if nota[i] < 4.0:
-            print("-", nota[i])
+    for i in nota:
+        if i < 4.0:
+            print("-", i)
 
     media = 0
-    for i in range(len(nota)):
-        media += nota[i]
+    for i in nota:
+        media += i
     print("\nMédia das notas:", media/len(nota), "\n")
 
 def ex_8():
