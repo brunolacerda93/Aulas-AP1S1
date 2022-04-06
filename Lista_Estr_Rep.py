@@ -29,9 +29,10 @@ def menu(opc):
 
 def ex_1():
     print("1. Faça um programa que exiba todos os números de 1 a 100 que são divisíveis por 7.\n")
+
     for i in range(1, 101):
         if i%7 == 0:
-            print(f"{i} ", end="")
+            print(i, end=" ")
     print("\n")
 
 def ex_2():
@@ -39,7 +40,7 @@ def ex_2():
 
     for i in range(1, 101):
         if i%21 == 0:
-            print(f"{i} ", end="")
+            print(i, end=" ")
     print("\n")
 
 def ex_3():
@@ -64,11 +65,12 @@ def ex_5():
 
     n = int(input("Digite um número: "))
     flag = True
-    for i in range(2, n):
+    i = 2
+    while i < n and flag:
         if n%i == 0:
             flag = False
-            break
-
+        i += 1
+    
     if flag:
         print("\nÉ primo!\n")
     else:
@@ -83,21 +85,14 @@ def ex_6():
     pot = 1
     for i in range(0, exp):
         pot *= base
-        # i += 1
+        # i += 1 <- no "for" esta linha é redundante, porém necessária no "while"
 
     print(f"\n{base}^{exp} = {pot}\n")
 
 def ex_7():
     print("7. Faça um programa em Python que leia um conjunto de valores correspondentes às notas que os alunos obtiveram em uma prova de Algoritmos. Quando o valor fornecido for um número negativo, significa que não existem mais notas para serem lidas. Após isso seu programa deverá:\n• Escrever quantas notas são maiores ou iguais a 6.0\n• Escrever quantas notas são maiores ou iguais a 4.0 e menores que 6.0\n• Escrever quantos notas são menores que 4.0\n• Escrever a média das notas fornecidas pelo usuário.\n")
 
-    # while True:
-    #    nota[i] = float(input(f"Digite a nota {i+1}: "))
-    #    nota.append(float(input(f"Digite a nota {i+1}: ")))
-    #    if nota[i] < 0:
-    #        del nota[i]
-    #        break
-    #    i += 1
-
+    # Minha resolução com Vetor
     n = 1
     nota = 0.0
     notas = []
@@ -126,26 +121,52 @@ def ex_7():
         if i < 4.0:
             print("-", i)
 
-    media = 0
+    media = 0.0
     for i in notas:
         media += i
     print("\nMédia das notas:", media/len(notas), "\n")
 
+    # Resolução da professora sem Vetor
+    # Note que sem vetor é impossível exibir as notas
+    # Podemos apenas mostrar quantas atendem cada condição
+    n = 0; x1 = 0; x2 = 0; x3 = 0
+    nota = 0.0
+    media = 0.0
+    while nota >= 0.0:
+        nota = float(input(f"Digite a nota {n+1}: "))
+        if nota >= 0.0:
+            n += 1
+            media += nota
+            if nota >= 6.0:
+                x1 += 1
+            elif nota >= 4.0 and nota < 6.0:
+                x2 += 1
+            elif nota < 4.0:
+                x3 += 1
+
+    print(x1, "notas são maiores ou iguais a 6.0")
+    print(x2, "notas são maiores ou iguais a 4.0 e menores do que 6.0")
+    print(x3, "notas são menores do que 4.0")
+    print("Média das notas:", media/n)
+
 def ex_8():
     print("8. Faça um programa que mostre os 8 primeiros termos da sequência de Fibonacci. Ex: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55...\n")
 
-    fib = [0, 1]
+    # RESOLUÇÃO SEM VETOR
     termo0 = 0
     termo1 = 1
     print(f" {termo0}, {termo1}", end="")
     for i in range(2, 11):
-        fib.append(fib[i-1] + fib[i-2])
-        # fib[i] = fib[i-1] + fib[i-2]
         termo = termo0 + termo1
         print(",", termo, end="")
         termo0 = termo1
         termo1 = termo
-    
+
+    # RESOLUÇÃO COM VETOR
+    fib = [0, 1]
+    for i in range(2, 11):
+        fib.append(fib[i-1] + fib[i-2])
+        # fib[i] = fib[i-1] + fib[i-2] <- Isto é como seria a linha de cima em C
     print(f"\n\n{fib}\n")
 
 def ex_9():
@@ -163,13 +184,11 @@ def ex_10():
 
     n = int(input("Digite N: "))
     soma = 1
-    print("\nS = 1 +", end="")
+    print("\nS = 1", end="")
     for i in range(1, n):
         N = i+1
         M = 2*i+1
-        print(f" {N}/{M}", end="")
-        if i < n-1:
-            print(" +", end="")
+        print(f" + {N}/{M}", end="")
         soma += N/M
     print("\nS =", soma, "\n")
 
