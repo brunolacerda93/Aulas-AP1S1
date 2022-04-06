@@ -83,46 +83,53 @@ def ex_6():
     pot = 1
     for i in range(0, exp):
         pot *= base
-        i += 1
+        # i += 1
 
     print(f"\n{base}^{exp} = {pot}\n")
 
 def ex_7():
     print("7. Faça um programa em Python que leia um conjunto de valores correspondentes às notas que os alunos obtiveram em uma prova de Algoritmos. Quando o valor fornecido for um número negativo, significa que não existem mais notas para serem lidas. Após isso seu programa deverá:\n• Escrever quantas notas são maiores ou iguais a 6.0\n• Escrever quantas notas são maiores ou iguais a 4.0 e menores que 6.0\n• Escrever quantos notas são menores que 4.0\n• Escrever a média das notas fornecidas pelo usuário.\n")
 
-    i = 0
-    nota = []
-    while True:
-        # nota[i] = float(input(f"Digite a nota {i+1}: "))
-        nota.append(float(input(f"Digite a nota {i+1}: ")))
-        if nota[i] < 0:
-            del nota[i]
-            break
-        i += 1
+    # while True:
+    #    nota[i] = float(input(f"Digite a nota {i+1}: "))
+    #    nota.append(float(input(f"Digite a nota {i+1}: ")))
+    #    if nota[i] < 0:
+    #        del nota[i]
+    #        break
+    #    i += 1
+
+    n = 1
+    nota = 0.0
+    notas = []
+    while nota >= 0.0:
+        nota = float(input(f"Digite a nota {n}: "))
+        if nota >= 0.0:
+            notas.append(nota)
+        n += 1
     
     system('cls')
     print("7. Faça um programa em Python que leia um conjunto de valores correspondentes às notas que os alunos obtiveram em uma prova de Algoritmos. Quando o valor fornecido for um número negativo, significa que não existem mais notas para serem lidas. Após isso seu programa deverá:\n• Escrever quantas notas são maiores ou iguais a 6.0\n• Escrever quantas notas são maiores ou iguais a 4.0 e menores que 6.0\n• Escrever quantos notas são menores que 4.0\n• Escrever a média das notas fornecidas pelo usuário.\n")
-    print(nota)
+    print(notas)
     
     print("\nNotas maiores ou iguais a 6.0:")
-    for i in nota:
+    for i in notas:
         if i >= 6.0:
             print("-", i)
 
     print("\nNotas maiores ou iguais a 4.0 e menores do que 6.0:")
-    for i in nota:
+    for i in notas:
         if i >= 4.0 and i < 6.0:
             print("-", i)
 
     print("\nNotas menores do que 4.0:")
-    for i in nota:
+    for i in notas:
         if i < 4.0:
             print("-", i)
 
     media = 0
-    for i in nota:
+    for i in notas:
         media += i
-    print("\nMédia das notas:", media/len(nota), "\n")
+    print("\nMédia das notas:", media/len(notas), "\n")
 
 def ex_8():
     print("8. Faça um programa que mostre os 8 primeiros termos da sequência de Fibonacci. Ex: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55...\n")
