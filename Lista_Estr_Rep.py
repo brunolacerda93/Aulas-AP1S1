@@ -125,7 +125,11 @@ def ex_7():
     media = 0.0
     for i in notas:
         media += i
-    print("\nMédia das notas:", media/len(notas))
+
+    if len(notas) > 0:
+        print("\nMédia das notas:", media/len(notas))
+    else:
+        print("\nNenhuma nota foi digitada.")
     print("\n=================//================\n")
 
     # Resolução da professora sem Vetor
@@ -150,7 +154,11 @@ def ex_7():
     print(x1, "notas são maiores ou iguais a 6.0")
     print(x2, "notas são maiores ou iguais a 4.0 e menores do que 6.0")
     print(x3, "notas são menores do que 4.0")
-    print("\nMédia das notas:", media/n, "\n")
+
+    if n > 0:
+        print("\nMédia das notas:", media/n, "\n")
+    else:
+        print("\nNenhuma nota foi digitada.\n")
 
 def ex_8():
     print("8. Faça um programa que mostre os 8 primeiros termos da sequência de Fibonacci. Ex: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55...\n")
