@@ -32,14 +32,23 @@ def ex_1():
     frase = input("Digite uma frase: ")
     letra = input("Digite uma letra para ser removida: ")
 
-    for i in range(len(frase)):
-        if frase[i] == letra:
+    #for i in range(len(frase)):
+    #    if frase[i] == letra:
+    #        nova_frase = frase[0:i] + frase[i+1:len(frase)]
+    #        break
+
+    i = 0
+    flag = True
+    nova_frase = frase
+    while i < len(frase) and flag == True:
+        if frase[i].lower() == letra.lower():
             nova_frase = frase[0:i] + frase[i+1:len(frase)]
-            break
+            flag = False
+        i += 1
 
     nova_frase_1 = ""
     for i in frase:
-        if i == letra:
+        if i.lower() == letra.lower():
             nova_frase_1 += ""
         else:
             nova_frase_1 += i
@@ -54,13 +63,13 @@ def ex_3():
     frase_1 = input("Digite uma frase: ")
     frase_2 = input("Digite uma frase: ")
 
-    if frase_1.strip() == frase_2.strip():
+    if frase_1.replace(" ", "") == frase_2.replace(" ", ""):
         print("\nAs frases são iguais!")
     else:
         print("\nAs frases são diferentes!")
 
-    print("\nA primeira frase possui:", len(frase_1.strip()), "caracteres.")
-    print("A segunda  frase possui:", len(frase_2.strip()), "caracteres.\n")
+    print("\nA primeira frase possui:", len(frase_1.replace(" ", "")), "caracteres.")
+    print("A segunda  frase possui:", len(frase_2.replace(" ", "")), "caracteres.\n")
 
 def ex_4():
     print("4. Escreva um programa que reconhece se uma string é um palíndromo, ou seja, se lida do início para o fim é igual se lida do fim para o início. Exemplos: arara, ovo, reter, Renner e Miriam.\n")
@@ -71,10 +80,10 @@ def ex_4():
     for i in range(len(frase)):
         nova_frase += frase[len(frase)-i-1]
 
-    if frase.lower() == nova_frase.lower():
-        print(f"\nA frase [{frase}] é palíndromo!\n")
+    if frase.replace(" ", "").lower() == nova_frase.replace(" ", "").lower():
+        print(f"\nA frase [{frase.strip()}] é palíndromo!\n")
     else:
-        print(f"\nA frase [{frase}] não é palíndromo!\n")
+        print(f"\nA frase [{frase.strip()}] não é palíndromo!\n")
 
 def ex_5():
     print("5. Faça um programa que recebe uma frase e retorna o número de palavras que a frase contém.\n")
