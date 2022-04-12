@@ -157,27 +157,36 @@ def ex_9():
         count2[ord(i)] += 1
 
     flag = True
-    for i in range(NO_OF_CHARS):
-        if count1[i] != count2[i]:
-            flag = False
-            break
+    if len(frase1.strip()) != len(frase2.strip()):
+        flag = False
+    else:
+        for i in range(NO_OF_CHARS):
+            if count1[i] != count2[i]:
+                flag = False
+                break
 
     if flag:
-        print("\nAs frases:\n", frase1, "\n", frase2, "\nSão anagramas!\n")
+        print("\nAs frases:\n\n", frase1.strip(), "\n", frase2.strip(), "\n\nSão anagramas!\n")
     else:
-        print("\nAs frases:\n", frase1, "\n", frase2, "\nNão são anagramas!\n")
+        print("\nAs frases:\n\n", frase1.strip(), "\n", frase2.strip(), "\n\nNão são anagramas!\n")
 
 def ex_10():
     print("10. Escreva um programa que solicite ao usuário a entrada de um número inteiro positivo ou negativo e mostre a quantidade de dígitos desse número.\n")
     
-    num = int(input("Digite um número: "))
+    num = input("Digite um número: ")
     count = 0
-    n = num
-    while n>0:
-        n //= 10
-        count += 1
+    n = int(num)
+    if n>0:
+        while n>0:
+            n //= 10
+            count += 1
+    else:
+        while n<-1:
+            n //= 10
+            count += 1
 
-    print("\nO número", num, "possui", count, "digitos\n")
+    print("\nO número", num, "possui", count, "digitos")
+    print("O número", num, "possui", len(num.replace("-", "")), "digitos\n")
 
 while True:
     system('cls')
