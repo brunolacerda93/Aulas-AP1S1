@@ -193,14 +193,14 @@ def ex_9():
 def ex_10():
     print("10. Faça um programa que receba um número N fornecido pelo usuário e mostre os N termos da série a seguir. Depois, imprima a soma total da série.\nS = 1 + 2/3 + 3/5 + 4/7 + 5/9 + ... + N/M\n")
 
-    n = int(input("Digite N: "))
+    num = int(input("Digite N: "))
     soma = 1
     print("\nS = 1", end="")
-    for i in range(1, n):
-        N = i+1
-        M = 2*i+1
-        print(f" + {N}/{M}", end="")
-        soma += N/M
+    for i in range(1, num):
+        n = i+1
+        m = 2*i+1
+        print(f" + {n}/{m}", end="")
+        soma += n/m
     print("\nS =", soma, "\n")
 
 while True:

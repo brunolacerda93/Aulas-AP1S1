@@ -166,7 +166,7 @@ def ex_9():
         count2[ord(i)] += 1
 
     flag = True
-    if len(frase1.strip()) != len(frase2.strip()):
+    if len(frase1.replace(" ", "")) != len(frase2.replace(" ", "")):
         flag = False
     else:
         for i in range(NO_OF_CHARS):
