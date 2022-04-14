@@ -77,8 +77,11 @@ def ex_4():
     frase = input("Digite uma frase: ")
 
     nova_frase = ""
-    for i in range(len(frase)):
-        nova_frase += frase[len(frase)-i-1]
+    for i in range(1, len(frase)+1):
+        nova_frase += frase[-i]
+
+    # for i in range(len(frase)):
+    #    nova_frase += frase[len(frase)-i-1]
 
     if frase.replace(" ", "").lower() == nova_frase.replace(" ", "").lower():
         print(f"\nA frase [{frase.strip()}] é palíndromo!\n")
