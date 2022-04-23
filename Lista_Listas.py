@@ -84,24 +84,40 @@ def ex_4():
 
     print("\nEis os números que foram digitados:\n", nums)
 
+    # RESOLUÇÃO COMO SERIA NA LINGUAGEM C
+
+    # for i in range(len(nums)):
+    #    for j in range(i+1, len(nums)):
+    #        flag = False
+    #        if nums[j] == nums[i]:
+    #            for aux in rep:
+    #                if aux == nums[i]:
+    #                    flag = True
+    #            if not flag:
+    #                rep.append(nums[i])
+
+    # for i in nums:
+    #    flag = True
+    #    for j in rep:
+    #        if i == j:
+    #            flag = False
+    #    if flag:
+    #        nrep.append(i)
+
+    # RESOLUÇÃO EM PYTHON
+
     rep = []
     nrep = []
-    for i in range(len(nums)):
-        for j in range(i+1, len(nums)):
-            flag = False
-            if nums[j] == nums[i]:
-                for aux in rep:
-                    if aux == nums[i]:
-                        flag = True
-                if not flag:
-                    rep.append(nums[i])
+    array = []                      # Esse array serve apenas para registrar o array
+    for i in nums:                  # com apenas uma ocorrência de cada elemento
+        if i not in array:
+            array.append(i)
+        else:
+            if i not in rep:
+                rep.append(i)
 
     for i in nums:
-        flag = True
-        for j in rep:
-            if i == j:
-                flag = False
-        if flag:
+        if i not in rep:
             nrep.append(i)
 
     print("\nEis os repetidos:\n", rep)

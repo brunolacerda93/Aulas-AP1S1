@@ -172,10 +172,11 @@ def ex_9():
     if len(frase1.replace(" ", "")) != len(frase2.replace(" ", "")):
         flag = False
     else:
-        for i in range(NO_OF_CHARS):
+        i = 0
+        while i<NO_OF_CHARS and flag:
             if count1[i] != count2[i]:
                 flag = False
-                break
+            i += 1
 
     if flag:
         print("\nAs frases:\n\n", frase1.strip(), "\n", frase2.strip(), "\n\nSão anagramas!\n")
