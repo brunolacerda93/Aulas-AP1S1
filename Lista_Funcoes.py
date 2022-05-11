@@ -127,12 +127,8 @@ def Fatorial(n):
 def ex_7():
     print("7. Faça uma função que receba 2 listas de valores inteiros e retorne a lista UNIÃO.\n")
 
-    lista1 = []
-    lista2 = []
-
-    for i in range(4): 
-        lista1.append(random.randint(10, 100))
-        lista2.append(random.randint(10, 100))
+    lista1 = random.sample(range(10, 100), 4)
+    lista2 = random.sample(range(10, 100), 4)
 
     print("Lista 1:", lista1)
     print("Lista 2:", lista2)
@@ -147,12 +143,8 @@ def Uniao (lista1, lista2):
 def ex_8():
     print("8. Faça uma função que receba 2 listas de valores inteiros e retorne a lista INTERSECÇÃO\n")
 
-    lista1 = []
-    lista2 = []
-
-    for i in range(10): 
-        lista1.append(random.randint(10, 100))
-        lista2.append(random.randint(10, 100))
+    lista1 = random.sample(range(10, 100), 10)
+    lista2 = random.sample(range(10, 100), 10)
 
     print("Lista 1:", lista1)
     print("Lista 2:", lista2)
@@ -171,12 +163,8 @@ def Interseccao(lista1, lista2):
 def ex_9():
     print("9. Faça uma função que receba 2 listas de valores inteiros e retorne a lista DIFERENÇA.\n")
 
-    lista1 = []
-    lista2 = []
-
-    for i in range(5): 
-        lista1.append(random.randint(0, 9))
-        lista2.append(random.randint(0, 9))
+    lista1 = random.sample(range(0, 9), 5)
+    lista2 = random.sample(range(0, 9), 5)
 
     print("Lista 1:", lista1)
     print("Lista 2:", lista2)
@@ -196,12 +184,8 @@ def Diferenca(lista1, lista2):
 def ex_10():
     print("10. Faça uma função que receba 2 listas de valores inteiros, o modo de saída (U:união, I:intersecção, D:diferença) e retorne a lista resultante. Obs: a função deverá invocar as funções definida nos exercícios de 7 a 9, para calcular U, I ou D.\n")
 
-    lista1 = []
-    lista2 = []
-
-    for i in range(5): 
-        lista1.append(random.randint(0, 9))
-        lista2.append(random.randint(0, 9))
+    lista1 = random.sample(range(0, 9), 5)
+    lista2 = random.sample(range(0, 9), 5)
 
     print("Lista 1:", lista1)
     print("Lista 2:", lista2)
