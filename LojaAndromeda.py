@@ -10,6 +10,8 @@ def menu(x, lista):
     while True:
         safeCheck(lista)
         system('cls')
+        print("=================== ANDROMEDA ===================")
+        print("Seja bem vinde ao santuário da Rainha dos Homens\n")
         if x == '1': print("CLIENTES")
         elif x == '2': print("PRODUTOS")
         print()
@@ -29,9 +31,9 @@ def menu(x, lista):
 def subMenu(opc, x, lista):
     match opc:
         case '1':
-            listarTodos(x, lista); system('pause')
+            listaTodos(x, lista); system('pause')
         case '2':
-            listarUm(lista); system('pause')
+            listaUm(x, lista); system('pause')
         case '3':
             incluir(x, lista); system('pause')
         case '4':
@@ -41,14 +43,43 @@ def subMenu(opc, x, lista):
         case _:
             return 0
 
-# Função para leitura das listas
-def listarTodos(x, lista):
-    print(lista)
+# Função para leitura completa das listas
+def listaTodos(x, lista):
+    if x == '1':
+        for i in range(len(lista)):
+            listaCliente(lista, i)
+
+    elif x == '2':
+        for i in range(len(lista)):
+            listaProduto(lista, i)
+
+# Função para ler um elemento da lista de clientes
+def listaCliente(lista, i):
+    print()
+    print("CPF                :", lista[i][0])
+    print("Nome               :", lista[i][1])
+    print("Data de Nascimento :", lista[i][2])
+    print("Sexo               :", lista[i][3])
+    print("Salário            :", lista[i][4])
+    print("E-mail             :", lista[i][5])
+    print("Telefones          :", lista[i][6])
+
+# Função para ler um elemento da lista de produtos
+def listaProduto(lista, i):
+    print()
+    print("Código           :", lista[i][0])
+    print("Descrição        :", lista[i][1])
+    print("Peso             :", lista[i][2])
+    print("Preço           R$", lista[i][3])
+    print("Desconto         :", lista[i][4])
+    print("Data de Validade :", lista[i][5])
 
 # Função para leitura de elemento individual
-def listarUm(lista):
+def listaUm(x, lista):
     i = int(input("Digite o elemento: "))
-    if i <= len(lista): print(lista[i-1])
+    if i <= len(lista) and i > 0:
+        if x == '1': listaCliente(lista, i-1)
+        elif x == '2': listaProduto(lista, i-1)
     else: print("Não há elemento neste índice!")
 
 # Função para incluir elementos
@@ -97,10 +128,9 @@ def alterar(x, lista):
         if cliente == -1:
             print("Não existe cliente com esse CPF")
         else:
-            mostraLista(cliente, lista)
             while True:
                 system('cls')
-                print(lista[cliente])
+                listaCliente(lista, cliente)
                 print("\nO que deseja alterar:")
                 print(" 1 - Nome")
                 print(" 2 - Data de Nascimento")
@@ -121,10 +151,9 @@ def alterar(x, lista):
         if produto == -1:
             print("Não existe produto com esse código")
         else:
-            mostraLista(produto, lista)
             while True:
                 system('cls')
-                print(lista[produto])
+                listaProduto(lista, produto)
                 print("\nO que deseja alterar:")
                 print(" 1 - Descrição")
                 print(" 2 - Peso")
@@ -150,10 +179,6 @@ def percorreLista(val, lista):
             return i
     return -1
 
-# Função para exibir o conteúdo de uma lista
-def mostraLista(elemento, lista):
-    print(lista[elemento])
-
 # Função para excluir um elemento de uma lista
 def excluir(x, lista):
     if x == '1':
@@ -161,7 +186,7 @@ def excluir(x, lista):
         cliente = percorreLista(cpf, lista)
         if cliente == -1: print("Não existe cliente com esse CPF")
         else:
-            mostraLista(cliente, lista)
+            listaCliente(lista, cliente)
             opc = input("Deseja remover este cliente do sistema da loja? [s/S] ")
             if opc == 's' or opc == 'S': del lista[cliente]; print("Removido!")
 
@@ -170,10 +195,18 @@ def excluir(x, lista):
         produto = percorreLista(cod, lista)
         if produto == -1: print("Não existe produto com esse código")
         else:
-            mostraLista(produto)
+            listaProduto(lista, produto)
             opc = input("Deseja remover este produto do sistema da loja? [s/S] ")
             if opc == 's' or opc == 'S': del lista[produto]; print("Removido!")
 
+'''
+Função destinada a corrigir um pequeno bug que ocasiona da possibilidade de o usuário digitar um cpf
+ou código já existente na função "incluir". No caso o programa inevitavelmente irá gravar 'None' na 
+posição do array que aquele suposto cadastro deveria estar. Só que isto gera um conflito na função 
+"percorreLista", porque esta não é capaz de ler elementos nulos. Então, ao invés de permitir que 
+ocorresse um elemento nulo no array, eu optei por acrescentar "-1", e o papel desta função é encontrar 
+elementos com esse valor e excluí-los do array.
+'''
 def safeCheck(lista):
     for i in range(len(lista)): 
         if lista[i] == -1: del lista[i]
@@ -185,11 +218,11 @@ def main():
     while True:
         system('cls')
         print("=================== ANDROMEDA ===================")
-        print("Seja bem vinde ao santuário da Rainha dos Homens")
+        print("Seja bem vinde ao santuário da Rainha dos Homens\n")
         print(" 1 - CLIENTES")
         print(" 2 - PRODUTOS")
         print(" 0 - SAIR")
-        opc = input("Escolha: ")
+        opc = input("\nEscolha: ")
         if opc == '0':
             break
         elif opc == '1': menu(opc, clientes)
@@ -197,4 +230,5 @@ def main():
         elif opc == 'cc': del clientes[len(clientes)-1] # Limpeza para quando um elemento "None" é adicionado na lista
         elif opc == 'cp': del produtos[len(produtos)-1] # Limpeza para quando um elemento "None" é adicionado na lista
 
+# Chamada do Programa
 main()
