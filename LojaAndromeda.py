@@ -56,22 +56,38 @@ def listaTodos(x, lista):
 # Função para ler um elemento da lista de clientes
 def listaCliente(lista, i):
     print()
-    print("CPF                :", lista[i][0])
+    print("CPF                :", end=" ")
+    for j in range(0, len(lista[i][0])):
+        print(lista[i][0][j], end="")
+        if j == 2: print(".", end="")
+        elif j == 5: print(".", end="")
+        elif j == 8: print("/", end="")
+    print()
     print("Nome               :", lista[i][1])
     print("Data de Nascimento :", lista[i][2])
     print("Sexo               :", lista[i][3])
-    print("Salário            :", lista[i][4])
-    print("E-mail             :", lista[i][5])
-    print("Telefones          :", lista[i][6])
+    print("Salário           R$", lista[i][4])
+    print("E-mails            :", end=" ") 
+    for j in range(0, len(lista[i][5])):
+        if j == len(lista[i][5])-1:
+            print(lista[i][5][j])
+        else:
+            print(lista[i][5][j], "\n\t\t   :", end=" ")
+    print("Telefones          :", end=" ")
+    for j in range(0, len(lista[i][6])):
+        if j == len(lista[i][6])-1:
+            print(lista[i][6][j])
+        else:
+            print(lista[i][6][j], "\n\t\t   :", end=" ")
 
 # Função para ler um elemento da lista de produtos
 def listaProduto(lista, i):
     print()
     print("Código           :", lista[i][0])
     print("Descrição        :", lista[i][1])
-    print("Peso             :", lista[i][2])
+    print("Peso (kg)        :", lista[i][2])
     print("Preço           R$", lista[i][3])
-    print("Desconto         :", lista[i][4])
+    print("Desconto        R$", lista[i][4])
     print("Data de Validade :", lista[i][5])
 
 # Função para leitura de elemento individual
@@ -90,19 +106,46 @@ def incluir(x, lista):
 # Formulário para adicionar Clientes
 def formCliente(lista):
     form = []
-    cpf = input("CPF: "); 
+    temp = input("CPF: ");
+    cpf = temp.replace(" ", "").replace(".", "").replace("/", "").replace(",", "").replace("-", "")
     if percorreLista(cpf, lista) == -1:                             # Teste para checar se o cpf já
         form.append(cpf)                                            # consta na lista de clientes
         nome = input("Nome: "); form.append(nome)
         data = input("Data de Nascimento: "); form.append(data)
         sexo = input("Sexo: "); form.append(sexo)
-        salario = input("Salário: "); form.append(salario)
-        email = input("E-mail: "); form.append(email)
-        tel = input("Telefone: "); form.append(tel)
+        salario = input("Salário: R$ "); form.append(salario)
+        email = mail(); form.append(email)
+        tel = telefone(); form.append(tel)
         return form
     else: 
         print("Já existe cliente com esse CPF")
         return -1
+
+# Função para criar a lista de e-mails do cliente
+def mail():
+    email = input("E-mail: ")
+    lista = []
+    lista.append(email)
+    opc = 's'
+    while opc == 's' or opc == 'S':
+        opc = input("Deseja adicionar mais um e-mail? [s/S] ")
+        if opc == 's' or opc == 'S':
+            email = input("E-mail: ")
+            lista.append(email)
+    return lista
+
+# Função para criar a lista de telefones do cliente
+def telefone():
+    tel = input("Telefone: ")
+    lista = []
+    lista.append(tel)
+    opc = 's'
+    while opc == 's' or opc == 'S':
+        opc = input("Deseja adicionar mais um telefone? [s/S] ")
+        if opc == 's' or opc == 'S':
+            tel = input("Telefone: ")
+            lista.append(tel)
+    return lista
 
 # Formulário para adicionar Produtos
 def formProduto(lista):
@@ -111,9 +154,9 @@ def formProduto(lista):
     if percorreLista(cod, lista) == -1:                             # Teste para checar se o código
         form.append(cod)                                            # já consta na lista de produtos
         descr = input("Descrição: "); form.append(descr)
-        peso = input("Peso: "); form.append(peso)
-        preco = input("Preço: R$"); form.append(preco)
-        desconto = input("Desconto: "); form.append(desconto)
+        peso = input("Peso (kg): "); form.append(peso)
+        preco = input("Preço: R$ "); form.append(preco)
+        desconto = input("Desconto: R$ "); form.append(desconto)
         data = input("Data de Validade: "); form.append(data)
         return form
     else: 
@@ -123,7 +166,8 @@ def formProduto(lista):
 # Função para alterar elementos
 def alterar(x, lista):
     if x == '1':
-        cpf = input("Digite o CPF: ")
+        temp = input("Digite o CPF: ")
+        cpf = temp.replace(" ", "").replace(".", "").replace("/", "").replace(",", "").replace("-", "")
         cliente = percorreLista(cpf, lista) 
         if cliente == -1:
             print("Não existe cliente com esse CPF")
