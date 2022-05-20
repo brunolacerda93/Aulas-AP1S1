@@ -37,7 +37,7 @@ def subMenu(opc, x, lista):
         case '3':
             incluir(x, lista); system('pause')
         case '4':
-            alterar(x, lista); system('pause')
+            alterar(x, lista)
         case '5':
             excluir(x, lista); system('pause')
         case _:
@@ -52,6 +52,8 @@ def listaTodos(x, lista):
     elif x == '2':
         for i in range(len(lista)):
             listaProduto(lista, i)
+
+    print()
 
 # Função para ler um elemento da lista de clientes
 def listaCliente(lista, i):
@@ -96,12 +98,14 @@ def listaUm(x, lista):
     if i <= len(lista) and i > 0:
         if x == '1': listaCliente(lista, i-1)
         elif x == '2': listaProduto(lista, i-1)
-    else: print("Não há elemento neste índice!")
+    else: print("\nNão há elemento neste índice!")
+    print()
 
 # Função para incluir elementos
 def incluir(x, lista):
     if x == '1': lista.append(formCliente(lista))
     elif x == '2': lista.append(formProduto(lista))
+    print()
 
 # Formulário para adicionar Clientes
 def formCliente(lista):
@@ -180,14 +184,16 @@ def alterar(x, lista):
                 print(" 2 - Data de Nascimento")
                 print(" 3 - Sexo")
                 print(" 4 - Salário")
-                print(" 5 - E-mail")
+                print(" 5 - E-mails")
                 print(" 6 - Telefones")
                 print(" 0 - Retornar")
                 opc = input("Escolha: ")
                 if opc == '0':
                     return 0
-                elif opc >= '1' and opc <= '6':
+                elif opc >= '1' and opc <= '4':
                     write(lista, cliente, opc)
+                elif opc == '5' or opc == '6':
+                    editar(lista, cliente, opc)
 
     elif x == '2':
         cod = input("Digite o código: ")
@@ -211,7 +217,41 @@ def alterar(x, lista):
                 elif opc >= '1' and opc <= '5':
                     write(lista, produto, opc)
 
-# Função para sobrescrever elementos de uma lista global
+# Função para editar e-mails ou telefones
+def editar(clientes, cliente, x):
+    j = int(x)
+    print("Qual elemento deseja alterar?\n")
+    for i in range(len(clientes[cliente][j])):
+        print(i+1, "-", clientes[cliente][j][i])
+    print()
+    print("[a/A] para adicionar um elemento!")
+    print("[r/R] para remover   um elemento!")
+    opc = input("Escolha: ")
+    
+    if opc == '0': return
+    elif opc == 'a' or opc == 'A':
+        if x == '5': clientes[cliente][j].append(input("E-mail: "))
+        elif x == '6': clientes[cliente][j].append(input("Telefone: "))
+    elif opc == 'r' or opc == 'R':
+        rem = int(input("Qual o índice do elemento que deseja remover? "))
+        if rem <= len(clientes[cliente][j]) and rem != 0:
+            del clientes[cliente][j][rem-1]
+        else:
+            print("Inválido!")
+            system('pause')
+    elif int(opc) < len(clientes[cliente][j]):
+        k = int(opc)-1
+        escrever(clientes, cliente, j, k)
+    else:
+        print("O elemento não se encontra na lista")
+        system('pause')
+
+# Função para alterar e-mails ou telefones
+def escrever(clientes, cliente, j, k):
+    novo = input("Digite o novo: ")
+    clientes[cliente][j][k] = novo
+
+# Função para sobrescrever elementos de uma lista
 def write(lista, i, j):
     novo = input("Digite o novo: ")
     lista[i][int(j)] = novo
@@ -228,20 +268,22 @@ def excluir(x, lista):
     if x == '1':
         cpf = input("Digite o CPF do cliente que deseja excluir: ")
         cliente = percorreLista(cpf, lista)
-        if cliente == -1: print("Não existe cliente com esse CPF")
+        if cliente == -1: print("\nNão existe cliente com esse CPF")
         else:
             listaCliente(lista, cliente)
-            opc = input("Deseja remover este cliente do sistema da loja? [s/S] ")
-            if opc == 's' or opc == 'S': del lista[cliente]; print("Removido!")
+            opc = input("\nDeseja remover este cliente do sistema da loja? [s/S] ")
+            if opc == 's' or opc == 'S': del lista[cliente]; print("\nRemovido!")
 
     elif x == '2':
         cod = input("Digite o código do produto que deseja excluir: ")
         produto = percorreLista(cod, lista)
-        if produto == -1: print("Não existe produto com esse código")
+        if produto == -1: print("\nNão existe produto com esse código")
         else:
             listaProduto(lista, produto)
-            opc = input("Deseja remover este produto do sistema da loja? [s/S] ")
-            if opc == 's' or opc == 'S': del lista[produto]; print("Removido!")
+            opc = input("\nDeseja remover este produto do sistema da loja? [s/S] ")
+            if opc == 's' or opc == 'S': del lista[produto]; print("\nRemovido!")
+
+    print()
 
 '''
 Função destinada a corrigir um pequeno bug que ocasiona da possibilidade de o usuário digitar um cpf
@@ -255,10 +297,18 @@ def safeCheck(lista):
     for i in range(len(lista)): 
         if lista[i] == -1: del lista[i]
 
+# Função para acrescentar algum conteúdo nas listas
+def conteudo(clientes, produtos):
+    client = ["22339988556", "Björn Hilmarsson", "28/10/1996", "masc", "9393.93", ["bjorn@gmail.com", "raposa@gmail.com"], ["(11) 9369-2378", "(16) 8678-6532"]]
+    clientes.append(client)
+    product = ["93", "Algo mutio específico", "23.0", "69.87", "2.30", "30/02/2997"]
+    produtos.append(product)
+
 # Declaração da função main()
 def main():
     clientes = []
     produtos = []
+    conteudo(clientes, produtos)
     while True:
         system('cls')
         print("=================== ANDROMEDA ===================")
