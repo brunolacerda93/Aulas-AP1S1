@@ -123,7 +123,7 @@ def formCliente(lista):
         return form
     else: 
         print("Já existe cliente com esse CPF")
-        return -1
+        return -1 # Elemento para ser excluído pela função safeCheck()
 
 # Função para criar a lista de e-mails do cliente
 def mail():
@@ -165,7 +165,7 @@ def formProduto(lista):
         return form
     else: 
         print("Já existe produto com esse código")
-        return -1
+        return -1 # Elemento para ser excluído pela função safeCheck()
 
 # Função para alterar elementos
 def alterar(x, lista):
@@ -230,7 +230,8 @@ def editar(clientes, cliente, x):
     print("[r/R] para remover   um elemento!")
     opc = input("Escolha: ")
     
-    if opc == '0': return
+    if opc == '0': 
+        return 0
     elif opc == 'a' or opc == 'A':
         if x == '5': clientes[cliente][j].append(input("E-mail: "))
         elif x == '6': clientes[cliente][j].append(input("Telefone: "))
@@ -239,13 +240,13 @@ def editar(clientes, cliente, x):
         if rem <= len(clientes[cliente][j]) and rem != 0:
             del clientes[cliente][j][rem-1]
         else:
-            print("Inválido!")
+            print("Inválido!\n")
             system('pause')
     elif int(opc) <= len(clientes[cliente][j]):
         k = int(opc)-1
         escrever(clientes, cliente, j, k)
     else:
-        print("O elemento não se encontra na lista")
+        print("O elemento não se encontra na lista\n")
         system('pause')
 
 # Função para alterar e-mails ou telefones
@@ -274,7 +275,8 @@ def excluir(x, lista):
         else:
             listaCliente(lista, cliente)
             opc = input("\nDeseja remover este cliente do sistema da loja? [s/S] ")
-            if opc == 's' or opc == 'S': del lista[cliente]; print("\nRemovido!")
+            if opc == 's' or opc == 'S': 
+                del lista[cliente]; print("\nRemovido!")
 
     elif x == '2':
         cod = input("Digite o código do produto que deseja excluir: ")
@@ -283,7 +285,8 @@ def excluir(x, lista):
         else:
             listaProduto(lista, produto)
             opc = input("\nDeseja remover este produto do sistema da loja? [s/S] ")
-            if opc == 's' or opc == 'S': del lista[produto]; print("\nRemovido!")
+            if opc == 's' or opc == 'S': 
+                del lista[produto]; print("\nRemovido!")
 
     print()
 
@@ -319,8 +322,7 @@ def main():
         print(" 2 - PRODUTOS")
         print(" 0 - SAIR")
         opc = input("\nEscolha: ")
-        if opc == '0':
-            break
+        if opc == '0': return 0
         elif opc == '1': menu(opc, clientes)
         elif opc == '2': menu(opc, produtos)
         elif opc == 'cc': del clientes[len(clientes)-1] # Limpeza para quando um elemento "None" é adicionado na lista
