@@ -174,7 +174,8 @@ def alterar(x, lista):
         cpf = temp.replace(" ", "").replace(".", "").replace("/", "").replace(",", "").replace("-", "")
         cliente = percorreLista(cpf, lista) 
         if cliente == -1:
-            print("Não existe cliente com esse CPF")
+            print("\nNão existe cliente com esse CPF\n")
+            system('pause')
         else:
             while True:
                 system('cls')
@@ -199,7 +200,8 @@ def alterar(x, lista):
         cod = input("Digite o código: ")
         produto = percorreLista(cod, lista)
         if produto == -1:
-            print("Não existe produto com esse código")
+            print("\nNão existe produto com esse código\n")
+            system('pause')
         else:
             while True:
                 system('cls')
@@ -239,7 +241,7 @@ def editar(clientes, cliente, x):
         else:
             print("Inválido!")
             system('pause')
-    elif int(opc) < len(clientes[cliente][j]):
+    elif int(opc) <= len(clientes[cliente][j]):
         k = int(opc)-1
         escrever(clientes, cliente, j, k)
     else:
@@ -301,7 +303,7 @@ def safeCheck(lista):
 def conteudo(clientes, produtos):
     client = ["22339988556", "Björn Hilmarsson", "28/10/1996", "masc", "9393.93", ["bjorn@gmail.com", "raposa@gmail.com"], ["(11) 9369-2378", "(16) 8678-6532"]]
     clientes.append(client)
-    product = ["93", "Algo mutio específico", "23.0", "69.87", "2.30", "30/02/2997"]
+    product = ["93", "Algo muito específico", "23.0", "69.87", "2.30", "30/02/2997"]
     produtos.append(product)
 
 # Declaração da função main()
