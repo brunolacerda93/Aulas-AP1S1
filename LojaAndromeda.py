@@ -13,8 +13,8 @@ def menu(x, lista):
         system('cls')
         print("=================== ANDROMEDA ===================")
         print("Seja bem vinde ao santuário da Rainha dos Homens\n")
-        if x == '1': print("CLIENTES")
-        elif x == '2': print("PRODUTOS")
+        if x == '1': print("CLIENTES".center(48))
+        elif x == '2': print("PRODUTOS".center(48))
         print()
         print(" 1 - Listar Todos".center(24))
         print(" 2 - Listar Um   ".center(24))
@@ -27,6 +27,7 @@ def menu(x, lista):
         if opc == '0':
             return 0
         elif opc >= '1' and opc <= '5':
+            system('cls')
             subMenu(opc, x, lista)
 
 # Opções do submenu - decisão
@@ -47,7 +48,7 @@ def subMenu(opc, x, lista):
 
 # Função para leitura completa das listas
 def listaTodos(x, lista):
-    print("\n========================================")
+    print("========================================")
     if x == '1':
         for i in range(len(lista)):
             listaCliente(lista, i)
@@ -207,6 +208,7 @@ def alteraCliente(clientes):
     else:
         while True:
             system('cls')
+            print("========================================")
             listaCliente(clientes, cliente)
             print("\nO que deseja alterar:")
             print(" 1 - Nome")
@@ -237,6 +239,7 @@ def alteraProduto(produtos):
     else:
         while True:
             system('cls')
+            print("========================================")
             listaProduto(produtos, produto)
             print("\nO que deseja alterar:")
             print(" 1 - Descrição")
@@ -315,8 +318,9 @@ def excluir(x, lista):
         cpf = digitos(input("Digite o CPF do cliente que deseja excluir: "))
         print()
         cliente = percorreLista(cpf, lista)
-        if cliente == -1: print("\n", "Não existe cliente com esse CPF".center(30))
+        if cliente == -1: print("Não existe cliente com esse CPF".center(30))
         else:
+            print("========================================")
             listaCliente(lista, cliente)
             opc = input("\nDeseja remover este cliente do sistema da loja? [s/S] ")
             if opc == 's' or opc == 'S': 
@@ -326,8 +330,9 @@ def excluir(x, lista):
         cod = digitos(input("Digite o código do produto que deseja excluir: "))
         print()
         produto = percorreLista(cod, lista)
-        if produto == -1: print("\n", "Não existe produto com esse código".center(30))
+        if produto == -1: print("Não existe produto com esse código".center(30))
         else:
+            print("========================================")
             listaProduto(lista, produto)
             opc = input("\nDeseja remover este produto do sistema da loja? [s/S] ")
             if opc == 's' or opc == 'S': 
