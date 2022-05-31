@@ -96,7 +96,11 @@ def listaCliente(clientes, i):
         elif j == 8: print("/", end="")
     print()
     print("Nome               :", clientes[i][1])
-    print("Data de Nascimento :", clientes[i][2])
+    print("Data de Nascimento :", end=" ")
+    for j in range(3):
+        print(f"{clientes[i][2][j]:02n}", end="")
+        if j == 2: print()
+        else: print("/", end="")
     print("Sexo               :", clientes[i][3])
     print("Salário           R$ {val:.2f}".format(val = clientes[i][4]))
     print("E-mails            :", end=" ") 
@@ -121,7 +125,11 @@ def listaProduto(produtos, i):
     print("Peso (kg)        :", produtos[i][2])
     print("Preço           R$ {val:.2f}".format(val = produtos[i][3]))
     print("Desconto        R$ {val:.2f}".format(val = produtos[i][4]))
-    print("Data de Validade :", produtos[i][5])
+    print("Data de Validade :", end=" ")
+    for j in range(3):
+        print(f"{produtos[i][5][j]:02n}", end="")
+        if j == 2: print()
+        else: print("/", end="")
     print("========================================")
 
 # Função para ler um elemento da lista de compra/venda
@@ -181,7 +189,8 @@ def cadastraCliente(clientes):
     if percorreLista(cpf, clientes) == -1:                                             # Teste para checar se o cpf já
         form.append(cpf)                                                               # consta na lista de clientes
         nome = input("Nome: ");                             form.append(nome)
-        data = input("Data de Nascimento: ");               form.append(data)
+        print("Data de Nascimento: ")
+        date = data();                                      form.append(date)
         sexo = input("Sexo: ");                             form.append(sexo)
         salario = float(floating(input("Salário: R$ ")));   form.append(salario)
         mail = email();                                     form.append(mail)
@@ -215,6 +224,94 @@ def telefone():
             tel = input("Telefone: ")
             lista.append(tel)
     return lista
+
+# Função para criar a lista de elementos de Datas
+def data():
+    lista = []
+    flag = False
+    while not flag:
+        dia = confirmaDia(input("Dia: "))
+        if dia != 0:
+            mes = confirmaMes(dia, input("Mês: "))
+            if mes != 0:
+                ano = confirmaAno(dia, mes, input("Ano: "))
+                if ano != 0:
+                    lista.append(dia)
+                    lista.append(mes)
+                    lista.append(ano)
+                    flag = True
+        if not flag:
+            print("Digite uma data válida!\n")
+    return lista
+
+# Função para verificar se o dia é válido
+def confirmaDia(dia):
+    if dia.isdigit():
+        d = int(dia)
+        if d in range(1, 32):
+            return int(dia)
+        else: return 0
+    elif dia == "": return 1
+    else: return 0
+
+# Função para verificar se o dia e o mês são válidos
+def confirmaMes(dia, mes):
+    MESES = {"janeiro": 1, "fevereiro": 2, "março": 3, "marco": 3, "abril": 4, "maio": 5, "junho": 6, "julho": 7, "agosto": 8, "setembro": 9, "outubro": 10, "novembro": 11, "dezembro": 12}
+    if mes.isdigit():
+        m = int(mes)
+        if m in range(1, 13) and checkMes(dia, m):
+            return int(mes)
+        else:
+            return 0
+
+    elif mes.lower() in MESES:
+        m = mes.lower()
+        if checkMes(dia, MESES[m]):
+            return MESES[m]
+        else: return 0
+
+    elif mes == "": return 1
+    else: return 0
+
+# FunÇão para verificar se o ano é válido
+def confirmaAno(dia, mes, ano):
+    if len(ano) == 4 and ano.isdigit():
+        a = int(ano)
+        if bissexto(dia, mes, a):
+            return a
+        else: return 0
+    elif ano == "": return 1000
+    else: return 0
+        
+# Função para confirmar se o dia e o mês são válidos
+def checkMes(dia, mes):
+    MESES_UM   = [1, 3, 5, 7, 8, 10, 12]
+    MESES_ZERO = [4, 6, 9, 11]
+    if mes in MESES_UM:
+        if dia <= 31:   return True
+        else:           return False
+
+    elif mes in MESES_ZERO:
+        if dia <= 30:   return True
+        else:           return False
+
+    elif mes == 2:
+        if dia <= 29:   return True
+        else:           return False
+    
+    else: return False
+
+# Função para verificar se o ano é bissexto
+def bissexto(dia, mes, ano):
+    if mes == 2 and dia == 29:
+        if ano%400 == 0 and ano%100 == 0:
+            return True
+        elif ano%4 == 0 and ano%100 != 0:
+            return True
+        else: 
+            return False
+    else:
+        return True
 
 # Formulário para adicionar Produtos
 def cadastraProduto(produtos):
@@ -480,13 +577,13 @@ def excluirMovimento(clientes, movimentos):
 
 # Função para acrescentar algum conteúdo nas listas
 def conteudo(clientes, produtos, movimentos):
-    client = ["22339988556", "Björn Hilmarsson", "28/10/1996", "masc", 9393.93, ["bjorn@gmail.com", "raposa@gmail.com"], ["(11) 9369-2378", "(16) 8678-6532"]]
+    client = ["22339988556", "Björn Hilmarsson", [23, 5, 1996], "masc", 9393.93, ["bjorn@gmail.com", "raposa@gmail.com"], ["(11) 9369-2378", "(16) 8678-6532"]]
     clientes.append(client)
-    client = ["93", "Björn Hilmarsson", "28/10/1996", "masc", 9393.93, ["bjorn@gmail.com", "raposa@gmail.com"], ["(11) 9369-2378", "(16) 8678-6532"]]
+    client = ["93", "Björn Hilmarsson", [7, 10, 1993] , "masc", 9393.93, ["bjorn@gmail.com", "raposa@gmail.com"], ["(11) 9369-2378", "(16) 8678-6532"]]
     clientes.append(client)
-    product = ["93", "Algo muito específico", "23.0", 69.87, 2.3, "30/02/2997"]
+    product = ["93", "Algo muito específico", "23.0", 69.87, 2.3, [23, 7, 2093]]
     produtos.append(product)
-    product = ["69", "Algo muito específico", "23.0", 69.87, 2.3, "30/02/2997"]
+    product = ["69", "Algo muito específico", "23.0", 69.87, 2.3, [9, 11, 2023]]
     produtos.append(product)
     movimentos['93'] = [[0, '93', '93', 6284.0], [1, '69', '69', 4662.33]]
 
