@@ -402,7 +402,6 @@ def alteraMovimento(clientes, produtos, movimentos):
         else:
             print("\n","Este cliente não possui movimentações na loja!\n".center(30))
             system('pause')
-    print()
 
 # Função para sobrescrever e-mails ou telefones
 def escrever(lista, i, j, k):
@@ -467,16 +466,17 @@ def excluirMovimento(clientes, movimentos):
         print("Não existe cliente com esse CPF".center(30))
         print()
     else:
-        for i in movimentos.keys():
-            if i == cpf: 
-                listaMovimento(movimentos, i)
-                opc = input("Deseja remover esta movimentação do sistema da loja? [s/S] ")
-                if opc == 's' or opc == 'S':
-                    del movimentos[i]
-                    print("\n", "Removido!".center(30))
-                    print()
-                    return 0
-        print("Oh gee, Rick\n")
+        if cpf in movimentos.keys():
+            listaMovimento(movimentos, cpf)
+            opc = input("Deseja remover esta movimentação do sistema da loja? [s/S] ")
+            if opc == 's' or opc == 'S':
+                del movimentos[cpf]
+                print("\n", "Removido!".center(30))
+                print()
+                return 0
+        else:
+            print("\n","Este cliente não possui movimentações na loja!\n".center(30))
+            system('pause')
 
 # Função para acrescentar algum conteúdo nas listas
 def conteudo(clientes, produtos, movimentos):
