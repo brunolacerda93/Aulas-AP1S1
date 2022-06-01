@@ -357,7 +357,6 @@ def cadastraMovimento(clientes, produtos, movimentos):
     cpf = digitos(input("CPF: "))
     if percorreLista(cpf, clientes) == -1:
         print("\n", "Não existe cliente com esse CPF\n".center(30))
-        system('pause')
     else:
         movimentos[cpf] = []
         opc = 's'
