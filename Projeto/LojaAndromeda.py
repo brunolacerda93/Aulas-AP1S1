@@ -166,10 +166,6 @@ def listaMovimento(movimentos, i):
         print(f"Valor             R$ {movimentos[i][j][3]:.2f}")
     print("========================================")
 
-# Função para ler um elemento da lista de relatórios
-def listaRelatorio(relatorios, i):
-    print()
-
 # Função para leitura de elemento individual
 def listaUm(x, lista):
     i = int(input("Digite o elemento: "))
@@ -207,7 +203,6 @@ def floating(array):
 def incluir(x, lista):
     if   x == '1': cadastraCliente(lista)
     elif x == '2': cadastraProduto(lista)
-    elif x == '4': cadastraRelatorio(lista)
     print()
 
 # Formulário para adicionar Clientes
@@ -381,10 +376,6 @@ def cadastraMovimento(clientes, produtos, movimentos):
                 valor = qtd*(produtos[produto][3] - produtos[produto][4]);      form.append(valor)
                 movimentos[cpf].append(form)
             opc = input("Deseja adicionar outro produto? [s/S] ")
-    print()
-
-# Formulário para adicionar relatórios
-def cadastraRelatorio(relatorios):
     print()
 
 # Função para alterar elementos - decisão
