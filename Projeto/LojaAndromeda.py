@@ -274,7 +274,7 @@ def confirmaDia(dia):
         if d in range(1, 32):
             return int(dia)
         else: return 0
-    elif dia == "": return 1
+    elif dia == "": return 15
     else: return 0
 
 # Função para verificar se o dia e o mês são válidos
@@ -293,7 +293,7 @@ def confirmaMes(dia, mes):
             return MESES[m]
         else: return 0
 
-    elif mes == "": return 1
+    elif mes == "": return 4
     else: return 0
 
 # FunÇão para verificar se o ano é válido
@@ -303,7 +303,7 @@ def confirmaAno(dia, mes, ano):
         if bissexto(dia, mes, a):
             return a
         else: return 0
-    elif ano == "": return 1000
+    elif ano == "": return 1452
     else: return 0
         
 # Função para confirmar se o dia e o mês são válidos
@@ -355,11 +355,11 @@ def cadastraProduto(produtos):
 # Formulário para adicionar compra/venda
 def cadastraMovimento(clientes, produtos, movimentos):
     cpf = digitos(input("CPF: "))
-    movimentos[cpf] = []
     if percorreLista(cpf, clientes) == -1:
         print("\n", "Não existe cliente com esse CPF\n".center(30))
         system('pause')
     else:
+        movimentos[cpf] = []
         opc = 's'
         while opc == 's' or opc == 'S':
             cod = digitos(input("\nCódigo: "))
