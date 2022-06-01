@@ -7,7 +7,7 @@ from os import system
 import string
 
 # Submenu genérico
-def menu(x, clientes, produtos, movimentos, relatorios):
+def menu(x, clientes, produtos, movimentos):
     while True:
         system('cls')
         print("=================== ANDROMEDA ===================")
@@ -15,7 +15,6 @@ def menu(x, clientes, produtos, movimentos, relatorios):
         if   x == '1': print("CLIENTES".center(48))
         elif x == '2': print("PRODUTOS".center(48))
         elif x == '3': print("COMPRA/VENDA".center(48))
-        elif x == '4': print("RELATÓRIOS".center(48))
         print()
         print(" 1 - Listar Todos".center(24))
         print(" 2 - Listar Um   ".center(24))
@@ -68,6 +67,23 @@ def subMenu_02(opc, x, clientes, produtos, movimentos):
         case _:
             return 0
 
+# Submenu de relatórios
+def menuRelatorios(relatorios):
+    while True:
+        system('cls')
+        print("=================== ANDROMEDA ===================")
+        print("Seja bem vinde ao santuário da Rainha dos Homens\n")
+        print("RELATÓRIOS".center(48))
+        print()
+        print("    1 - Clientes por Telefones")
+        print("    2 - Produtos Vencidos     ")
+        print("    3 - Vendas por Data       ")
+        print("    0 - Retornar              ")
+        print("\n(👁 ͜ʖ👁 )")
+        opc = input("Escolha: ")
+        if opc == '0':
+            return 0
+
 # Função para leitura completa das listas
 def listaTodos(x, lista):
     print("========================================")
@@ -80,9 +96,6 @@ def listaTodos(x, lista):
     elif x == '3':
         for i in lista:
             listaMovimento(lista, i)
-    elif x == '4':
-        for i in range(len(lista)):
-            listaRelatorio(lista, i)
     print()
 
 # Função para ler um elemento da lista de clientes
@@ -134,8 +147,24 @@ def listaProduto(produtos, i):
 
 # Função para ler um elemento da lista de compra/venda
 def listaMovimento(movimentos, i):
-    print(i, ":", movimentos[i])
+    #print(i, ":", movimentos[i])
+    print("CPF:", end=" ")
+    for j in range(len(i)):
+        print(i[j], end="")
+        if   j == 2: print(".", end="")
+        elif j == 5: print(".", end="")
+        elif j == 8: print("/", end="")
     print()
+    for j in range(len(movimentos[i])):
+        print("\n", "PRODUTO {n:02n}".format(n = movimentos[i][j][0]+1).center(36))
+        print("Data da Compra     :", end=" ")
+        for k in range(3):
+            print(f"{movimentos[i][j][1][k]:02n}", end="")
+            if k == 2: print()
+            else: print("/", end="")
+        print("Hora               :", movimentos[i][j][2])
+        print(f"Valor             R$ {movimentos[i][j][3]:.2f}")
+    print("========================================")
 
 # Função para ler um elemento da lista de relatórios
 def listaRelatorio(relatorios, i):
@@ -148,8 +177,7 @@ def listaUm(x, lista):
     if i <= len(lista) and i > 0:
         if   x == '1': listaCliente(lista, i-1)
         elif x == '2': listaProduto(lista, i-1)
-        elif x == '3': listaMovimento(lista, i-1)
-        elif x == '4': listaRelatorio(lista, i-1)
+        elif x == '3': listaMovimento(lista, list(lista.keys())[i-1])
     else: print("\n", "Não há elemento neste índice!".center(36))
     print()
 
@@ -189,7 +217,7 @@ def cadastraCliente(clientes):
     if percorreLista(cpf, clientes) == -1:                                             # Teste para checar se o cpf já
         form.append(cpf)                                                               # consta na lista de clientes
         nome = input("Nome: ");                             form.append(nome)
-        print("Data de Nascimento: ")
+        print("Data de Nascimento:")
         date = data();                                      form.append(date)
         sexo = input("Sexo: ");                             form.append(sexo)
         salario = float(floating(input("Salário: R$ ")));   form.append(salario)
@@ -323,7 +351,8 @@ def cadastraProduto(produtos):
         peso = input("Peso (kg): ");                            form.append(peso)
         preco = float(floating(input("Preço: R$ ")));           form.append(preco)
         desconto = float(floating(input("Desconto: R$ ")));     form.append(desconto)
-        data = input("Data de Validade: ");                     form.append(data)
+        print("Data de Validade:")
+        date = data();                                          form.append(date)
         produtos.append(form)
     else: 
         print("\n", "Já existe produto com esse código".center(30))
@@ -338,14 +367,15 @@ def cadastraMovimento(clientes, produtos, movimentos):
     else:
         opc = 's'
         while opc == 's' or opc == 'S':
-            cod = digitos(input("Código: "))
+            cod = digitos(input("\nCódigo: "))
             produto = percorreLista(cod, produtos)
             if produto == -1:
                 print("\n", "Não existe produto com esse código\n".center(30))
             else:
                 form  = []
-                prod  = produto;                                                form.append(prod)
-                data  = input("Data: ");                                        form.append(data)
+                prod  = produto;                                                form.append(prod)        
+                print("Data de Hoje:")
+                date = data();                                                  form.append(date)
                 hora  = input("Hora: ");                                        form.append(hora)
                 qtd   = float(input("Quantidade: "))
                 valor = qtd*(produtos[produto][3] - produtos[produto][4]);      form.append(valor)
@@ -386,8 +416,11 @@ def alteraCliente(clientes):
             opc = input("Escolha: ")
             if opc == '0':
                 return 0
-            elif opc >= '1' and opc <= '3':
+            elif opc == '1' or opc == '3':
                 write(clientes, cliente, opc)
+            elif opc == '2':
+                print("Nova Data:")
+                clientes[cliente][2] = data()
             elif opc == '4':
                 floaters(clientes, cliente, opc)
             elif opc == '5' or opc == '6':
@@ -416,10 +449,13 @@ def alteraProduto(produtos):
             opc = input("Escolha: ")
             if opc == '0':
                 return 0
-            elif opc == '1' or opc == '2' or opc == '5':
+            elif opc == '1' or opc == '2':
                 write(produtos, produto, opc)
             elif opc == '3' or opc == '4':
                 floaters(produtos, produto, opc)
+            elif opc == '5':
+                print("Nova Data:")
+                produtos[produto][5] = data()
 
 # Função para alterar especificamente e-mails ou telefones
 def editar(lista, i, x):
@@ -565,7 +601,7 @@ def excluirMovimento(clientes, movimentos):
     else:
         if cpf in movimentos.keys():
             listaMovimento(movimentos, cpf)
-            opc = input("Deseja remover esta movimentação do sistema da loja? [s/S] ")
+            opc = input("\nDeseja remover esta movimentação do sistema da loja? [s/S] ")
             if opc == 's' or opc == 'S':
                 del movimentos[cpf]
                 print("\n", "Removido!".center(30))
@@ -581,11 +617,11 @@ def conteudo(clientes, produtos, movimentos):
     clientes.append(client)
     client = ["93", "Björn Hilmarsson", [7, 10, 1993] , "masc", 9393.93, ["bjorn@gmail.com", "raposa@gmail.com"], ["(11) 9369-2378", "(16) 8678-6532"]]
     clientes.append(client)
-    product = ["93", "Algo muito específico", "23.0", 69.87, 2.3, [23, 7, 2093]]
+    product = ["93", "Algo muito específico", "23.0", 69.87, 2.3, [23, 7, 1993]]
     produtos.append(product)
-    product = ["69", "Algo muito específico", "23.0", 69.87, 2.3, [9, 11, 2023]]
+    product = ["23", "Algo muito específico", "23.0", 69.87, 2.3, [9, 11, 2023]]
     produtos.append(product)
-    movimentos['93'] = [[0, '93', '93', 6284.0], [1, '69', '69', 4662.33]]
+    movimentos['93'] = [[1, [5, 6, 2022], '17:23', 6284.0], [0, [5, 6, 2022], '17:23', 4662.33]]
 
 # Declaração da função main()
 def main():
@@ -610,7 +646,8 @@ def main():
         print("\n(👁 ͜ʖ👁 )")
         opc = input("Escolha: ")
         if   opc == '0': return 0
-        elif opc >= '1' and opc <= '4': menu(opc, clientes, produtos, movimentos, relatorios)
+        elif opc >= '1' and opc <= '3': menu(opc, clientes, produtos, movimentos)
+        elif opc == '4': menuRelatorios(relatorios)
 
 # Chamada do Programa
 main()
