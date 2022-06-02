@@ -608,12 +608,7 @@ def excluirMovimento(clientes, movimentos):
 
 # Função para ler o arquivo clientes
 def lerClientes():
-    LISTA = [0, 1, 3]
-    clientes  = []
-    cliente   = []
-    data      = []
-    emails    = []
-    telefones = []
+    LISTA = [0, 1, 3]; clientes = []; cliente = []; data = []; emails = []; telefones = []
 
     #arq = open("CLIENTES.txt", "r")
     arq = open("TESTE.txt", "r")
@@ -638,11 +633,7 @@ def lerClientes():
 
 # Função para ler o arquivo produtos
 def lerProdutos():
-    LISTA  = [0, 1, 2]
-    LISTAF = [3, 4]
-    produtos  = []
-    produto   = []
-    data      = []
+    LISTA = [0, 1, 2]; LISTAF = [3, 4]; produtos = []; produto = []; data = []
 
     #arq = open("PRODUTOS.txt", "r")
     arq = open("TESTE_P.txt", "r")
@@ -663,10 +654,7 @@ def lerProdutos():
 
 # Função para ler o arquivo movimentos
 def lerMovimentos():
-    movimentos = {}
-    movimento  = []
-    data       = []
-    mov        = []
+    movimentos = {}; movimento = []; data = []; mov = []
 
     #arq = open("MOVIMENTOS.txt", "r")
     arq = open("TESTE_M.txt", "r")
