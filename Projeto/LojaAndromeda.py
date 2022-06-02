@@ -61,7 +61,7 @@ def subMenu_02(opc, x, clientes, produtos, movimentos):
         case '3':
             cadastraMovimento(clientes, produtos, movimentos);  system('pause')
         case '4':
-            alteraMovimento(clientes, produtos, movimentos)
+            alteraMovimento(clientes, produtos, movimentos);    arquivaMovimento(movimentos)
         case '5':
             excluirMovimento(clientes, movimentos);             system('pause')
         case _:
@@ -220,21 +220,8 @@ def cadastraCliente(clientes):
         tel     = telefone();                               form.append(tel)
         clientes.append(form)
         
-        # Adiciona no arquivo CLIENTES.txt
-        arq = open("TESTE.txt", "a")
-        arq.write("0 "   + cpf                      + "\n")
-        arq.write("1 "   + nome.replace(" ", "_")   + "\n")
-        arq.write("2 0 " + str(date[0])             + "\n")
-        arq.write("2 1 " + str(date[1])             + "\n")
-        arq.write("2 2 " + str(date[2])             + "\n")
-        arq.write("3 "   + sexo                     + "\n")
-        arq.write("4 "   + str(salario)             + "\n")
-        for i in range(len(mail)):
-            arq.write("5 " + str(i) + " " + str(mail[i]) + "\n")
-        for i in range(len(tel)):
-            arq.write("6 " + str(i) + " " + str(tel[i]).replace(" ", "_") + "\n")
-        arq.write("-1\n")
-        arq.close()
+        # Atualiza o arquivo CLIENTES.txt
+        arquivaCliente(clientes)
     else: 
         print("\n","Já existe cliente com esse CPF".center(30))
 
@@ -366,19 +353,9 @@ def cadastraProduto(produtos):
         form.append(date)
         produtos.append(form)
 
-        # Adiciona no arquivo PRODUTOS.txt
-        arq = open("TESTE_P.txt", "a")
-        arq.write("0 "   + cod           + "\n")
-        arq.write("1 "   + descr         + "\n")
-        arq.write("2 "   + peso          + "\n")
-        arq.write("3 "   + str(preco)    + "\n")
-        arq.write("4 "   + str(desconto) + "\n")
-        arq.write("5 0 " + str(date[0])  + "\n")
-        arq.write("5 1 " + str(date[1])  + "\n")
-        arq.write("5 2 " + str(date[2])  + "\n")
-        arq.write("-1\n")
-        arq.close()
-    else: 
+        # Atualiza o arquivo PRODUTOS.txt
+        arquivaProduto(produtos)
+    else:
         print("\n", "Já existe produto com esse código".center(30))
 
 # Formulário para adicionar compra/venda
@@ -388,7 +365,6 @@ def cadastraMovimento(clientes, produtos, movimentos):
         print("\n", "Não existe cliente com esse CPF\n".center(30))
     else:
         movimentos[cpf] = []
-        i = 0
         opc = 's'
         while opc == 's' or opc == 'S':
             cod = digitos(input("\nCódigo: "))
@@ -405,30 +381,16 @@ def cadastraMovimento(clientes, produtos, movimentos):
                 valor = qtd*(produtos[produto][3] - produtos[produto][4]);      form.append(valor)
                 movimentos[cpf].append(form)
 
-                # Adiciona no arquivo MOVIMENTOS.txt
-                arq = open("TESTE_M.txt", "a")
-                if i == 0: arq.write("0 "  + cpf           + "\n")
-                arq.write("1 "   + str(prod)     + "\n")
-                arq.write("2 0 " + str(date[0])  + "\n")
-                arq.write("2 1 " + str(date[1])  + "\n")
-                arq.write("2 2 " + str(date[2])  + "\n")
-                arq.write("3 "   + hora          + "\n")
-                arq.write("4 "   + str(valor)    + "\n")
-                arq.write("-1\n")
-                arq.close()
-                i += 1
-                
             opc = input("Deseja adicionar outro produto? [s/S] ")
             if opc != 's' and opc != 'S':
-                arq = open("TESTE_M.txt", "a")
-                arq.write("-2\n")
-                arq.close()
+                # Atualiza o arquivo MOVIMENTOS.txt
+                arquivaMovimento(movimentos)
     print()
 
 # Função para alterar elementos - decisão
 def alterar(x, lista):
-    if   x == '1': alteraCliente(lista)
-    elif x == '2': alteraProduto(lista)
+    if   x == '1': alteraCliente(lista); arquivaCliente(lista)
+    elif x == '2': alteraProduto(lista); arquivaProduto(lista)
 
 # Função para alterar Clientes
 def alteraCliente(clientes):
@@ -598,8 +560,8 @@ def percorreLista(val, lista):
 
 # Função para excluir elementos - decisão
 def excluir(x, lista):
-    if   x == '1': excluirCliente(lista)
-    elif x == '2': excluirProduto(lista)
+    if   x == '1': excluirCliente(lista); arquivaCliente(lista)
+    elif x == '2': excluirProduto(lista); arquivaProduto(lista)
     print()
 
 # Função para excluir Clientes
@@ -642,6 +604,7 @@ def excluirMovimento(clientes, movimentos):
             opc = input("\nDeseja remover esta movimentação do sistema da loja? [s/S] ")
             if opc == 's' or opc == 'S':
                 del movimentos[cpf]
+                arquivaMovimento(movimentos)
                 print("\n", "Removido!".center(30))
                 print()
                 return 0
@@ -676,6 +639,7 @@ def lerClientes():
             clientes.append(    cliente[:]);   cliente.clear()
         linha = arq.readline()
     arq.close()
+
     return clientes
 
 # Função para ler o arquivo produtos
@@ -700,6 +664,7 @@ def lerProdutos():
             produtos.append(    produto[:]);   produto.clear()
         linha = arq.readline()
     arq.close()
+
     return produtos
 
 # Função para ler o arquivo movimentos
@@ -720,10 +685,10 @@ def lerMovimentos():
             cpf = str(dados[1])
             movimentos[cpf] = []
 
-        elif key == 1:  mov.insert(key-1, int(dados[1]))
-        elif key == 2: data.insert(int(dados[1]), int(dados[2]))
-        elif key == 3:  mov.insert(key-1, str(dados[1]))
-        elif key == 4:  mov.insert(key-1, float(dados[1]))
+        elif key == 1:  mov.insert(key-1,          int(dados[1]))
+        elif key == 2: data.insert(int(dados[1]),  int(dados[2]))
+        elif key == 3:  mov.insert(key-1,          str(dados[1]))
+        elif key == 4:  mov.insert(key-1,          float(dados[1]))
 
         elif key == -1:
             mov.insert(1,   data[:]); data.clear()
@@ -733,7 +698,57 @@ def lerMovimentos():
 
         linha = arq.readline()
     arq.close()
+
     return movimentos
+
+# Função para arquivar o conteúdo de clientes
+def arquivaCliente(clientes):
+    arq = open("TESTE.txt", "w")
+    for cliente in clientes:
+        arq.write("0 "   +     cliente[0]                   + "\n")
+        arq.write("1 "   +     cliente[1].replace(" ", "_") + "\n")
+        arq.write("2 0 " + str(cliente[2][0])               + "\n")
+        arq.write("2 1 " + str(cliente[2][1])               + "\n")
+        arq.write("2 2 " + str(cliente[2][2])               + "\n")
+        arq.write("3 "   +     cliente[3]                   + "\n")
+        arq.write("4 "   + str(cliente[4])                  + "\n")
+        for i in range(len(cliente[5])):
+            arq.write("5 " + str(i) + " " + str(cliente[5][i]) + "\n")
+        for i in range(len(cliente[6])):
+            arq.write("6 " + str(i) + " " + str(cliente[6][i]).replace(" ", "_") + "\n")
+        arq.write("-1\n")
+    arq.close()
+
+# Função para arquivar o conteúdo de produtos
+def arquivaProduto(produtos):
+    arq = open("TESTE_P.txt", "w")
+    for produto in produtos:
+        arq.write("0 "   + produto[0]          + "\n")
+        arq.write("1 "   + produto[1]          + "\n")
+        arq.write("2 "   + produto[2]          + "\n")
+        arq.write("3 "   + str(produto[3])     + "\n")
+        arq.write("4 "   + str(produto[4])     + "\n")
+        arq.write("5 0 " + str(produto[5][0])  + "\n")
+        arq.write("5 1 " + str(produto[5][1])  + "\n")
+        arq.write("5 2 " + str(produto[5][2])  + "\n")
+        arq.write("-1\n")
+    arq.close()
+
+# Função para arquivar o conteúdo de movimentos
+def arquivaMovimento(movimentos):
+    arq = open("TESTE_M.txt", "w")
+    for cpf in movimentos.keys():
+        for i in range(len(movimentos[cpf])):
+            if i == 0: arq.write("0 "  +      cpf             + "\n")
+            arq.write("1 "   + str(movimentos[cpf][i][0])     + "\n")
+            arq.write("2 0 " + str(movimentos[cpf][i][1][0])  + "\n")
+            arq.write("2 1 " + str(movimentos[cpf][i][1][1])  + "\n")
+            arq.write("2 2 " + str(movimentos[cpf][i][1][2])  + "\n")
+            arq.write("3 "   +     movimentos[cpf][i][2]      + "\n")
+            arq.write("4 "   + str(movimentos[cpf][i][3])     + "\n")
+            arq.write("-1\n")
+        arq.write("-2\n")
+    arq.close()
 
 # Função para acrescentar algum conteúdo nas listas
 def conteudo(clientes, produtos, movimentos):
