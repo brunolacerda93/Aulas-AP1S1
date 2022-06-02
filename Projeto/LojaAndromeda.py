@@ -108,13 +108,13 @@ def listaCliente(clientes, i):
         elif j == 5: print(".", end="")
         elif j == 8: print("/", end="")
     print()
-    print("Nome               :", clientes[i][1])
+    print("Nome               :", clientes[i][1].replace("_", " "))
     print("Data de Nascimento :", end=" ")
     for j in range(3):
         print(f"{clientes[i][2][j]:02n}", end="")
         if j == 2: print()
         else: print("/", end="")
-    print("Sexo               :", clientes[i][3])
+    print("Sexo               :", clientes[i][3].replace("_", " "))
     print("Salário           R$ {val:.2f}".format(val = clientes[i][4]))
     print("E-mails            :", end=" ") 
     for j in range(0, len(clientes[i][5])):
@@ -125,16 +125,16 @@ def listaCliente(clientes, i):
     print("Telefones          :", end=" ")
     for j in range(0, len(clientes[i][6])):
         if j == len(clientes[i][6])-1:
-            print(clientes[i][6][j])
+            print(clientes[i][6][j].replace("_", " "))
         else:
-            print(clientes[i][6][j], "\n\t\t   :", end=" ")
+            print(clientes[i][6][j].replace("_", " "), "\n\t\t   :", end=" ")
     print("========================================")
 
 # Função para ler um elemento da lista de produtos
 def listaProduto(produtos, i):
     print("PRODUTO {n:02n}".format(n = i+1).center(40))
     print("Código           :", produtos[i][0])
-    print("Descrição        :", produtos[i][1])
+    print("Descrição        :", produtos[i][1].replace("_", " "))
     print("Peso (kg)        :", produtos[i][2])
     print("Preço           R$ {val:.2f}".format(val = produtos[i][3]))
     print("Desconto        R$ {val:.2f}".format(val = produtos[i][4]))
@@ -211,14 +211,30 @@ def cadastraCliente(clientes):
     cpf = digitos(input("CPF: "))
     if percorreLista(cpf, clientes) == -1:                                             # Teste para checar se o cpf já
         form.append(cpf)                                                               # consta na lista de clientes
-        nome = input("Nome: ");                             form.append(nome)
+        nome    = input("Nome: ");                          form.append(nome)
         print("Data de Nascimento:")
-        date = data();                                      form.append(date)
-        sexo = input("Sexo: ");                             form.append(sexo)
+        date    = data();                                   form.append(date)
+        sexo    = input("Sexo: ");                          form.append(sexo)
         salario = float(floating(input("Salário: R$ ")));   form.append(salario)
-        mail = email();                                     form.append(mail)
-        tel = telefone();                                   form.append(tel)
+        mail    = email();                                  form.append(mail)
+        tel     = telefone();                               form.append(tel)
         clientes.append(form)
+        
+        # Adiciona no arquivo CLIENTES.txt
+        arq = open("TESTE.txt", "a")
+        arq.write("0 "   + cpf                      + "\n")
+        arq.write("1 "   + nome.replace(" ", "_")   + "\n")
+        arq.write("2 0 " + str(date[0])             + "\n")
+        arq.write("2 1 " + str(date[1])             + "\n")
+        arq.write("2 2 " + str(date[2])             + "\n")
+        arq.write("3 "   + sexo                     + "\n")
+        arq.write("4 "   + str(salario)             + "\n")
+        for i in range(len(mail)):
+            arq.write("5 " + str(i) + " " + str(mail[i]) + "\n")
+        for i in range(len(tel)):
+            arq.write("6 " + str(i) + " " + str(tel[i]).replace(" ", "_") + "\n")
+        arq.write("-1\n")
+        arq.close()
     else: 
         print("\n","Já existe cliente com esse CPF".center(30))
 
@@ -342,13 +358,26 @@ def cadastraProduto(produtos):
     cod = digitos(input("Código: "))
     if percorreLista(cod, produtos) == -1:                                             # Teste para checar se o código
         form.append(cod)                                                               # já consta na lista de produtos
-        descr = input("Descrição: ");                           form.append(descr)
-        peso = input("Peso (kg): ");                            form.append(peso)
-        preco = float(floating(input("Preço: R$ ")));           form.append(preco)
+        descr    = input("Descrição: ");                        form.append(descr)
+        peso     = input("Peso (kg): ");                        form.append(peso)
+        preco    = float(floating(input("Preço: R$ ")));        form.append(preco)
         desconto = float(floating(input("Desconto: R$ ")));     form.append(desconto)
-        print("Data de Validade:")
-        date = data();                                          form.append(date)
+        print("Data de Validade:"); date = data()
+        form.append(date)
         produtos.append(form)
+
+        # Adiciona no arquivo PRODUTOS.txt
+        arq = open("TESTE_P.txt", "a")
+        arq.write("0 "   + cod           + "\n")
+        arq.write("1 "   + descr         + "\n")
+        arq.write("2 "   + peso          + "\n")
+        arq.write("3 "   + str(preco)    + "\n")
+        arq.write("4 "   + str(desconto) + "\n")
+        arq.write("5 0 " + str(date[0])  + "\n")
+        arq.write("5 1 " + str(date[1])  + "\n")
+        arq.write("5 2 " + str(date[2])  + "\n")
+        arq.write("-1\n")
+        arq.close()
     else: 
         print("\n", "Já existe produto com esse código".center(30))
 
@@ -359,6 +388,7 @@ def cadastraMovimento(clientes, produtos, movimentos):
         print("\n", "Não existe cliente com esse CPF\n".center(30))
     else:
         movimentos[cpf] = []
+        i = 0
         opc = 's'
         while opc == 's' or opc == 'S':
             cod = digitos(input("\nCódigo: "))
@@ -369,12 +399,30 @@ def cadastraMovimento(clientes, produtos, movimentos):
                 form  = []
                 prod  = produto;                                                form.append(prod)        
                 print("Data de Hoje:")
-                date = data();                                                  form.append(date)
+                date  = data();                                                 form.append(date)
                 hora  = input("Hora: ");                                        form.append(hora)
                 qtd   = float(input("Quantidade: "))
                 valor = qtd*(produtos[produto][3] - produtos[produto][4]);      form.append(valor)
                 movimentos[cpf].append(form)
+
+                # Adiciona no arquivo MOVIMENTOS.txt
+                arq = open("TESTE_M.txt", "a")
+                if i == 0: arq.write("0 "  + cpf           + "\n")
+                arq.write("1 "   + str(prod)     + "\n")
+                arq.write("2 0 " + str(date[0])  + "\n")
+                arq.write("2 1 " + str(date[1])  + "\n")
+                arq.write("2 2 " + str(date[2])  + "\n")
+                arq.write("3 "   + hora          + "\n")
+                arq.write("4 "   + str(valor)    + "\n")
+                arq.write("-1\n")
+                arq.close()
+                i += 1
+                
             opc = input("Deseja adicionar outro produto? [s/S] ")
+            if opc != 's' and opc != 'S':
+                arq = open("TESTE_M.txt", "a")
+                arq.write("-2\n")
+                arq.close()
     print()
 
 # Função para alterar elementos - decisão
@@ -601,25 +649,114 @@ def excluirMovimento(clientes, movimentos):
             print("\n","Este cliente não possui movimentações na loja!\n".center(30))
             system('pause')
 
+# Função para ler o arquivo clientes
+def lerClientes():
+    LISTA = [0, 1, 3]
+    clientes  = []
+    cliente   = []
+    data      = []
+    emails    = []
+    telefones = []
+
+    #arq = open("CLIENTES.txt", "r")
+    arq = open("TESTE.txt", "r")
+    linha = arq.readline()
+    while linha:
+        dados = linha.split()
+        key = int(dados[0])
+        if   key in LISTA:    cliente.insert(key,           str(dados[1]))
+        elif key == 2:           data.insert(int(dados[1]), int(dados[2]))
+        elif key == 4:        cliente.insert(key,           float(dados[1]))
+        elif key == 5:         emails.insert(int(dados[1]), str(dados[2]))
+        elif key == 6:      telefones.insert(int(dados[1]), str(dados[2]))
+        elif key == -1:
+            cliente.insert(2,      data[:]);      data.clear()
+            cliente.insert(5,    emails[:]);    emails.clear()
+            cliente.insert(6, telefones[:]); telefones.clear()
+            clientes.append(    cliente[:]);   cliente.clear()
+        linha = arq.readline()
+    arq.close()
+    return clientes
+
+# Função para ler o arquivo produtos
+def lerProdutos():
+    LISTA  = [0, 1, 2]
+    LISTAF = [3, 4]
+    produtos  = []
+    produto   = []
+    data      = []
+
+    #arq = open("PRODUTOS.txt", "r")
+    arq = open("TESTE_P.txt", "r")
+    linha = arq.readline()
+    while linha:
+        dados = linha.split()
+        key = int(dados[0])
+        if   key in LISTA:    produto.insert(key,           str(dados[1]))
+        elif key in LISTAF:   produto.insert(key,           float(dados[1]))
+        elif key == 5:           data.insert(int(dados[1]), int(dados[2]))
+        elif key == -1:
+            produto.insert (5,     data[:]);      data.clear()
+            produtos.append(    produto[:]);   produto.clear()
+        linha = arq.readline()
+    arq.close()
+    return produtos
+
+# Função para ler o arquivo movimentos
+def lerMovimentos():
+    movimentos = {}
+    movimento  = []
+    data       = []
+    mov        = []
+
+    #arq = open("MOVIMENTOS.txt", "r")
+    arq = open("TESTE_M.txt", "r")
+    linha = arq.readline()
+    while linha:
+        dados = linha.split()
+        key = int(dados[0])
+
+        if key == 0:
+            cpf = str(dados[1])
+            movimentos[cpf] = []
+
+        elif key == 1:  mov.insert(key-1, int(dados[1]))
+        elif key == 2: data.insert(int(dados[1]), int(dados[2]))
+        elif key == 3:  mov.insert(key-1, str(dados[1]))
+        elif key == 4:  mov.insert(key-1, float(dados[1]))
+
+        elif key == -1:
+            mov.insert(1,   data[:]); data.clear()
+            movimento.append(mov[:]);  mov.clear()
+        elif key == -2:
+            movimentos[cpf] = movimento[:]; movimento.clear()
+
+        linha = arq.readline()
+    arq.close()
+    return movimentos
+
 # Função para acrescentar algum conteúdo nas listas
 def conteudo(clientes, produtos, movimentos):
-    client = ["22339988556", "Björn Hilmarsson", [23, 5, 1996], "masc", 9393.93, ["bjorn@gmail.com", "raposa@gmail.com"], ["(11) 9369-2378", "(16) 8678-6532"]]
+    client = ["22339988556", "Björn_Hilmarsson", [23, 5, 1996], "masc", 9393.93, ["bjorn@gmail.com", "raposa@gmail.com"], ["(11)_9369-2378", "(16)_8678-6532"]]
     clientes.append(client)
-    client = ["93", "Björn Hilmarsson", [7, 10, 1993] , "masc", 9393.93, ["bjorn@gmail.com", "raposa@gmail.com"], ["(11) 9369-2378", "(16) 8678-6532"]]
+    client = ["93939393936", "Björn_Hilmarsson", [7, 10, 1993], "masc", 9393.93, ["bjorn@gmail.com", "raposa@gmail.com"], ["(11)_9369-2378", "(16)_8678-6532"]]
     clientes.append(client)
-    product = ["93", "Algo muito específico", "23.0", 69.87, 2.3, [23, 7, 1993]]
+    product = ["93", "Algo_muito_específico", "23.0", 69.87, 2.3, [23, 7, 1993]]
     produtos.append(product)
-    product = ["23", "Algo muito específico", "23.0", 69.87, 2.3, [9, 11, 2023]]
+    product = ["23", "Algo_muito_específico", "23.0", 69.87, 2.3, [9, 11, 2023]]
     produtos.append(product)
-    movimentos['93'] = [[1, [5, 6, 2022], '17:23', 6284.0], [0, [5, 6, 2022], '17:23', 4662.33]]
+    movimentos['93939393936'] = [[1, [5, 6, 2022], '17:23', 6284.0], [0, [5, 6, 2022], '17:23', 4662.33]]
 
 # Declaração da função main()
 def main():
-    clientes = []
-    produtos = []
-    movimentos = {}
+    #clientes = []
+    #produtos = []
+    #movimentos = {}
+    clientes = lerClientes()
+    produtos = lerProdutos()
+    movimentos = lerMovimentos()
     relatorios = []
-    conteudo(clientes, produtos, movimentos)
+    #conteudo(clientes, produtos, movimentos)
     while True:
         system('cls')
         print("╔════     .     *      -   .     +    .     ════╗")
