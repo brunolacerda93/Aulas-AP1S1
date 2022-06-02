@@ -8,6 +8,80 @@ import string
 
 # Submenu genérico
 def menu(x, clientes, produtos, movimentos):
+    # Opções do submenu para clientes/produtos - decisão
+    def subMenu_01(opc, x, lista):
+        match opc:
+            case '1':
+                listaTodos(x, lista);   system('pause')
+            case '2':
+                listaUm(x, lista);      system('pause')
+            case '3':
+                incluir(x, lista);      system('pause')
+            case '4':
+                alterar(x, lista)
+            case '5':
+                excluir(x, lista);      system('pause')
+            case _:
+                return 0
+
+    # Opções do submenu para compra/venda - decisão
+    def subMenu_02(opc, x, clientes, produtos, movimentos):
+        match opc:
+            case '1':
+                listaTodos(x, movimentos);                          system('pause')
+            case '2':
+                listaUm(x, movimentos);                             system('pause')
+            case '3':
+                cadastraMovimento(clientes, produtos, movimentos);  system('pause')
+            case '4':
+                alteraMovimento(clientes, produtos, movimentos);    arquivaMovimento(movimentos)
+            case '5':
+                excluirMovimento(clientes, movimentos);             system('pause')
+            case _:
+                return 0
+    
+    # Função para leitura completa das listas
+    def listaTodos(x, lista):
+        print("========================================")
+        if x == '1':
+            for i in range(len(lista)):
+                listaCliente(lista, i)
+        elif x == '2':
+            for i in range(len(lista)):
+                listaProduto(lista, i)
+        elif x == '3':
+            for i in lista:
+                listaMovimento(lista, i)
+        print()
+    
+    # Função para leitura de elemento individual
+    def listaUm(x, lista):
+        i = int(input("Digite o elemento: "))
+        print("\n========================================")
+        if i <= len(lista) and i > 0:
+            if   x == '1': listaCliente(lista, i-1)
+            elif x == '2': listaProduto(lista, i-1)
+            elif x == '3': listaMovimento(lista, list(lista.keys())[i-1])
+        else: print("\n", "Não há elemento neste índice!".center(36))
+        print()
+    
+    # Função para incluir elementos - decisão
+    def incluir(x, lista):
+        if   x == '1': cadastraCliente(lista); arquivaCliente(lista)
+        elif x == '2': cadastraProduto(lista); arquivaProduto(lista)
+        print()
+    
+    # Função para alterar elementos - decisão
+    def alterar(x, lista):
+        if   x == '1': alteraCliente(lista); arquivaCliente(lista)
+        elif x == '2': alteraProduto(lista); arquivaProduto(lista)
+    
+    # Função para excluir elementos - decisão
+    def excluir(x, lista):
+        if   x == '1': excluirCliente(lista); arquivaCliente(lista)
+        elif x == '2': excluirProduto(lista); arquivaProduto(lista)
+        print()
+    
     while True:
         system('cls')
         print("=================== ANDROMEDA ===================")
@@ -35,38 +109,6 @@ def menu(x, clientes, produtos, movimentos):
             elif x == '3':
                 subMenu_02(opc, x, clientes, produtos, movimentos)
 
-# Opções do submenu para clientes/produtos - decisão
-def subMenu_01(opc, x, lista):
-    match opc:
-        case '1':
-            listaTodos(x, lista);   system('pause')
-        case '2':
-            listaUm(x, lista);      system('pause')
-        case '3':
-            incluir(x, lista);      system('pause')
-        case '4':
-            alterar(x, lista)
-        case '5':
-            excluir(x, lista);      system('pause')
-        case _:
-            return 0
-
-# Opções do submenu para compra/venda - decisão
-def subMenu_02(opc, x, clientes, produtos, movimentos):
-    match opc:
-        case '1':
-            listaTodos(x, movimentos);                          system('pause')
-        case '2':
-            listaUm(x, movimentos);                             system('pause')
-        case '3':
-            cadastraMovimento(clientes, produtos, movimentos);  system('pause')
-        case '4':
-            alteraMovimento(clientes, produtos, movimentos);    arquivaMovimento(movimentos)
-        case '5':
-            excluirMovimento(clientes, movimentos);             system('pause')
-        case _:
-            return 0
-
 # Submenu de relatórios
 def menuRelatorios(relatorios):
     while True:
@@ -83,20 +125,6 @@ def menuRelatorios(relatorios):
         opc = input("Escolha: ")
         if opc == '0':
             return 0
-
-# Função para leitura completa das listas
-def listaTodos(x, lista):
-    print("========================================")
-    if x == '1':
-        for i in range(len(lista)):
-            listaCliente(lista, i)
-    elif x == '2':
-        for i in range(len(lista)):
-            listaProduto(lista, i)
-    elif x == '3':
-        for i in lista:
-            listaMovimento(lista, i)
-    print()
 
 # Função para ler um elemento da lista de clientes
 def listaCliente(clientes, i):
@@ -166,18 +194,7 @@ def listaMovimento(movimentos, i):
         print(f"Valor             R$ {movimentos[i][j][3]:.2f}")
     print("========================================")
 
-# Função para leitura de elemento individual
-def listaUm(x, lista):
-    i = int(input("Digite o elemento: "))
-    print("\n========================================")
-    if i <= len(lista) and i > 0:
-        if   x == '1': listaCliente(lista, i-1)
-        elif x == '2': listaProduto(lista, i-1)
-        elif x == '3': listaMovimento(lista, list(lista.keys())[i-1])
-    else: print("\n", "Não há elemento neste índice!".center(36))
-    print()
-
-# Função para filtrar em uma string apenas números
+# Função para filtrar em uma string para int
 def digitos(array):
     novoArray = ""
     if not array.isdigit():
@@ -188,7 +205,7 @@ def digitos(array):
     else:
         return array
 
-# Função para converter uma string em float
+# Função para filtrar em uma string para float
 def floating(array):
     novoArray = ""
     if not array.isdigit():
@@ -199,60 +216,77 @@ def floating(array):
     else:
         return array
 
-# Função para incluir elementos - decisão
-def incluir(x, lista):
-    if   x == '1': cadastraCliente(lista)
-    elif x == '2': cadastraProduto(lista)
-    print()
-
-# Formulário para adicionar Clientes
-def cadastraCliente(clientes):
-    form = []
-    cpf = digitos(input("CPF: "))
-    if percorreLista(cpf, clientes) == -1:                                             # Teste para checar se o cpf já
-        form.append(cpf)                                                               # consta na lista de clientes
-        nome    = input("Nome: ");                          form.append(nome)
-        print("Data de Nascimento:")
-        date    = data();                                   form.append(date)
-        sexo    = input("Sexo: ");                          form.append(sexo)
-        salario = float(floating(input("Salário: R$ ")));   form.append(salario)
-        mail    = email();                                  form.append(mail)
-        tel     = telefone();                               form.append(tel)
-        clientes.append(form)
-        
-        # Atualiza o arquivo CLIENTES.txt
-        arquivaCliente(clientes)
-    else: 
-        print("\n","Já existe cliente com esse CPF".center(30))
-
-# Função para criar a lista de e-mails do cliente
-def email():
-    email = input("E-mail: ")
-    lista = []
-    lista.append(email)
-    opc = 's'
-    while opc == 's' or opc == 'S':
-        opc = input("Deseja adicionar mais um e-mail? [s/S] ")
-        if opc == 's' or opc == 'S':
-            email = input("E-mail: ")
-            lista.append(email)
-    return lista
-
-# Função para criar a lista de telefones do cliente
-def telefone():
-    tel = input("Telefone: ")
-    lista = []
-    lista.append(tel)
-    opc = 's'
-    while opc == 's' or opc == 'S':
-        opc = input("Deseja adicionar mais um telefone? [s/S] ")
-        if opc == 's' or opc == 'S':
-            tel = input("Telefone: ")
-            lista.append(tel)
-    return lista
-
 # Função para criar a lista de elementos de Datas
 def data():
+    # Função para verificar se o dia é válido
+    def confirmaDia(dia):
+        if dia.isdigit():
+            d = int(dia)
+            if d in range(1, 32):
+                return int(dia)
+            else: return 0
+        elif dia == "": return 15
+        else: return 0
+
+    # Função para verificar se o dia e o mês são válidos
+    def confirmaMes(dia, mes):
+        MESES = {"janeiro": 1, "fevereiro": 2, "março": 3, "marco": 3, "abril": 4, "maio": 5, "junho": 6, "julho": 7, "agosto": 8, "setembro": 9, "outubro": 10, "novembro": 11, "dezembro": 12}
+        if mes.isdigit():
+            m = int(mes)
+            if m in range(1, 13) and checkMes(dia, m):
+                return int(mes)
+            else:
+                return 0
+
+        elif mes.lower() in MESES:
+            m = mes.lower()
+            if checkMes(dia, MESES[m]):
+                return MESES[m]
+            else: return 0
+
+        elif mes == "": return 4
+        else: return 0
+
+    # FunÇão para verificar se o ano é válido
+    def confirmaAno(dia, mes, ano):
+        if len(ano) == 4 and ano.isdigit():
+            a = int(ano)
+            if bissexto(dia, mes, a):
+                return a
+            else: return 0
+        elif ano == "": return 1452
+        else: return 0
+            
+    # Função para confirmar se o dia e o mês são válidos
+    def checkMes(dia, mes):
+        MESES_UM   = [1, 3, 5, 7, 8, 10, 12]
+        MESES_ZERO = [4, 6, 9, 11]
+        if mes in MESES_UM:
+            if dia <= 31:   return True
+            else:           return False
+
+        elif mes in MESES_ZERO:
+            if dia <= 30:   return True
+            else:           return False
+
+        elif mes == 2:
+            if dia <= 29:   return True
+            else:           return False
+        
+        else: return False
+
+    # Função para verificar se o ano é bissexto
+    def bissexto(dia, mes, ano):
+        if mes == 2 and dia == 29:
+            if ano%400 == 0 and ano%100 == 0:
+                return True
+            elif ano%4 == 0 and ano%100 != 0:
+                return True
+            else: 
+                return False
+        else:
+            return True
+    
     lista = []
     flag = False
     while not flag:
@@ -270,74 +304,48 @@ def data():
             print("Digite uma data válida!\n")
     return lista
 
-# Função para verificar se o dia é válido
-def confirmaDia(dia):
-    if dia.isdigit():
-        d = int(dia)
-        if d in range(1, 32):
-            return int(dia)
-        else: return 0
-    elif dia == "": return 15
-    else: return 0
+# Formulário para adicionar Clientes
+def cadastraCliente(clientes):
+    # Função para criar a lista de e-mails do cliente
+    def email():
+        email = input("E-mail: ")
+        lista = []
+        lista.append(email)
+        opc = 's'
+        while opc == 's' or opc == 'S':
+            opc = input("Deseja adicionar mais um e-mail? [s/S] ")
+            if opc == 's' or opc == 'S':
+                email = input("E-mail: ")
+                lista.append(email)
+        return lista
 
-# Função para verificar se o dia e o mês são válidos
-def confirmaMes(dia, mes):
-    MESES = {"janeiro": 1, "fevereiro": 2, "março": 3, "marco": 3, "abril": 4, "maio": 5, "junho": 6, "julho": 7, "agosto": 8, "setembro": 9, "outubro": 10, "novembro": 11, "dezembro": 12}
-    if mes.isdigit():
-        m = int(mes)
-        if m in range(1, 13) and checkMes(dia, m):
-            return int(mes)
-        else:
-            return 0
-
-    elif mes.lower() in MESES:
-        m = mes.lower()
-        if checkMes(dia, MESES[m]):
-            return MESES[m]
-        else: return 0
-
-    elif mes == "": return 4
-    else: return 0
-
-# FunÇão para verificar se o ano é válido
-def confirmaAno(dia, mes, ano):
-    if len(ano) == 4 and ano.isdigit():
-        a = int(ano)
-        if bissexto(dia, mes, a):
-            return a
-        else: return 0
-    elif ano == "": return 1452
-    else: return 0
-        
-# Função para confirmar se o dia e o mês são válidos
-def checkMes(dia, mes):
-    MESES_UM   = [1, 3, 5, 7, 8, 10, 12]
-    MESES_ZERO = [4, 6, 9, 11]
-    if mes in MESES_UM:
-        if dia <= 31:   return True
-        else:           return False
-
-    elif mes in MESES_ZERO:
-        if dia <= 30:   return True
-        else:           return False
-
-    elif mes == 2:
-        if dia <= 29:   return True
-        else:           return False
+    # Função para criar a lista de telefones do cliente
+    def telefone():
+        tel = input("Telefone: ")
+        lista = []
+        lista.append(tel)
+        opc = 's'
+        while opc == 's' or opc == 'S':
+            opc = input("Deseja adicionar mais um telefone? [s/S] ")
+            if opc == 's' or opc == 'S':
+                tel = input("Telefone: ")
+                lista.append(tel)
+        return lista
     
-    else: return False
-
-# Função para verificar se o ano é bissexto
-def bissexto(dia, mes, ano):
-    if mes == 2 and dia == 29:
-        if ano%400 == 0 and ano%100 == 0:
-            return True
-        elif ano%4 == 0 and ano%100 != 0:
-            return True
-        else: 
-            return False
-    else:
-        return True
+    form = []
+    cpf = digitos(input("CPF: "))
+    if percorreLista(cpf, clientes) == -1:                                             # Teste para checar se o cpf já
+        form.append(cpf)                                                               # consta na lista de clientes
+        nome    = input("Nome: ");                          form.append(nome)
+        print("Data de Nascimento:")
+        date    = data();                                   form.append(date)
+        sexo    = input("Sexo: ");                          form.append(sexo)
+        salario = float(floating(input("Salário: R$ ")));   form.append(salario)
+        mail    = email();                                  form.append(mail)
+        tel     = telefone();                               form.append(tel)
+        clientes.append(form)
+    else: 
+        print("\n","Já existe cliente com esse CPF".center(30))
 
 # Formulário para adicionar Produtos
 def cadastraProduto(produtos):
@@ -352,9 +360,6 @@ def cadastraProduto(produtos):
         print("Data de Validade:"); date = data()
         form.append(date)
         produtos.append(form)
-
-        # Atualiza o arquivo PRODUTOS.txt
-        arquivaProduto(produtos)
     else:
         print("\n", "Já existe produto com esse código".center(30))
 
@@ -387,13 +392,50 @@ def cadastraMovimento(clientes, produtos, movimentos):
                 arquivaMovimento(movimentos)
     print()
 
-# Função para alterar elementos - decisão
-def alterar(x, lista):
-    if   x == '1': alteraCliente(lista); arquivaCliente(lista)
-    elif x == '2': alteraProduto(lista); arquivaProduto(lista)
-
 # Função para alterar Clientes
 def alteraCliente(clientes):
+    # Função para alterar especificamente e-mails ou telefones
+    def editar(lista, i, x):
+        # Função para sobrescrever e-mails ou telefones
+        def escrever(lista, i, j, k):
+            novo = input("Digite o novo: ")
+            lista[i][j][k] = novo
+
+        j = int(x)
+        print("\nQual elemento deseja alterar?\n")
+        for k in range(len(lista[i][j])):
+            print(k+1, "-", lista[i][j][k])
+        print()
+        print("[a/A] para adicionar um elemento!")
+        print("[r/R] para remover   um elemento!")
+        print("\n(👁 ͜ʖ👁 )")
+        opc = input("Escolha: ")
+
+        if opc == '0': 
+            return 0
+        
+        elif opc == 'a' or opc == 'A':
+            if   x == '5': lista[i][j].append(input("E-mail: "))
+            elif x == '6': lista[i][j].append(input("Telefone: "))
+        
+        elif opc == 'r' or opc == 'R':
+            rem = int(input("Qual o índice do elemento que deseja remover? "))
+            if rem <= len(lista[i][j]) and rem != 0:
+                del lista[i][j][rem-1]
+                print("\n", "Removido!\n".center(30));                                      system('pause')
+            else: 
+                print("\n", "O elemento não se encontra na lista\n".center(30));            system('pause')
+        
+        elif opc.isdigit():
+            if int(opc) <= len(lista[i][j]):
+                k = int(opc)-1
+                escrever(lista, i, j, k)
+            else:
+                print("\n", "O elemento não se encontra na lista\n".center(30));            system('pause')
+        
+        else: 
+            print("\n", "Inválido!\n".center(30));                                          system('pause')
+    
     cpf = digitos(input("Digite o CPF: "))
     cliente = percorreLista(cpf, clientes) 
     if cliente == -1:
@@ -457,43 +499,6 @@ def alteraProduto(produtos):
                 print("Nova Data:")
                 produtos[produto][5] = data()
 
-# Função para alterar especificamente e-mails ou telefones
-def editar(lista, i, x):
-    j = int(x)
-    print("\nQual elemento deseja alterar?\n")
-    for k in range(len(lista[i][j])):
-        print(k+1, "-", lista[i][j][k])
-    print()
-    print("[a/A] para adicionar um elemento!")
-    print("[r/R] para remover   um elemento!")
-    print("\n(👁 ͜ʖ👁 )")
-    opc = input("Escolha: ")
-
-    if opc == '0': 
-        return 0
-    
-    elif opc == 'a' or opc == 'A':
-        if   x == '5': lista[i][j].append(input("E-mail: "))
-        elif x == '6': lista[i][j].append(input("Telefone: "))
-    
-    elif opc == 'r' or opc == 'R':
-        rem = int(input("Qual o índice do elemento que deseja remover? "))
-        if rem <= len(lista[i][j]) and rem != 0:
-            del lista[i][j][rem-1]
-            print("\n", "Removido!\n".center(30));                                      system('pause')
-        else: 
-            print("\n", "O elemento não se encontra na lista\n".center(30));            system('pause')
-    
-    elif opc.isdigit():
-        if int(opc) <= len(lista[i][j]):
-            k = int(opc)-1
-            escrever(lista, i, j, k)
-        else:
-            print("\n", "O elemento não se encontra na lista\n".center(30));            system('pause')
-    
-    else: 
-        print("\n", "Inválido!\n".center(30));                                          system('pause')
-
 # Função para alterar compra/venda
 def alteraMovimento(clientes, produtos, movimentos):
     cpf = digitos(input("Digite o CPF: "))
@@ -536,11 +541,6 @@ def alteraMovimento(clientes, produtos, movimentos):
             print("\n","Este cliente não possui movimentações na loja!\n".center(30))
             system('pause')
 
-# Função para sobrescrever e-mails ou telefones
-def escrever(lista, i, j, k):
-    novo = input("Digite o novo: ")
-    lista[i][j][k] = novo
-
 # Função para sobrescrever strings de uma lista
 def write(lista, i, j):
     novo = input("Digite o novo: ")
@@ -557,12 +557,6 @@ def percorreLista(val, lista):
         if lista[i][0] == val:
             return i
     return -1
-
-# Função para excluir elementos - decisão
-def excluir(x, lista):
-    if   x == '1': excluirCliente(lista); arquivaCliente(lista)
-    elif x == '2': excluirProduto(lista); arquivaProduto(lista)
-    print()
 
 # Função para excluir Clientes
 def excluirCliente(clientes):
@@ -750,20 +744,21 @@ def arquivaMovimento(movimentos):
         arq.write("-2\n")
     arq.close()
 
-# Função para acrescentar algum conteúdo nas listas
-def conteudo(clientes, produtos, movimentos):
-    client = ["22339988556", "Björn_Hilmarsson", [23, 5, 1996], "masc", 9393.93, ["bjorn@gmail.com", "raposa@gmail.com"], ["(11)_9369-2378", "(16)_8678-6532"]]
-    clientes.append(client)
-    client = ["93939393936", "Björn_Hilmarsson", [7, 10, 1993], "masc", 9393.93, ["bjorn@gmail.com", "raposa@gmail.com"], ["(11)_9369-2378", "(16)_8678-6532"]]
-    clientes.append(client)
-    product = ["93", "Algo_muito_específico", "23.0", 69.87, 2.3, [23, 7, 1993]]
-    produtos.append(product)
-    product = ["23", "Algo_muito_específico", "23.0", 69.87, 2.3, [9, 11, 2023]]
-    produtos.append(product)
-    movimentos['93939393936'] = [[1, [5, 6, 2022], '17:23', 6284.0], [0, [5, 6, 2022], '17:23', 4662.33]]
-
 # Declaração da função main()
 def main():
+    # Função para acrescentar algum conteúdo nas listas
+    def conteudo(clientes, produtos, movimentos):
+        client = ["22339988556", "Björn_Hilmarsson", [23, 5, 1996], "masc", 9393.93, ["bjorn@gmail.com", "raposa@gmail.com"], ["(11)_9369-2378", "(16)_8678-6532"]]
+        clientes.append(client)
+        client = ["93939393936", "Björn_Hilmarsson", [7, 10, 1993], "masc", 9393.93, ["bjorn@gmail.com", "raposa@gmail.com"], ["(11)_9369-2378", "(16)_8678-6532"]]
+        clientes.append(client)
+        product = ["93", "Algo_muito_específico", "23.0", 69.87, 2.3, [23, 7, 1993]]
+        produtos.append(product)
+        product = ["23", "Algo_muito_específico", "23.0", 69.87, 2.3, [9, 11, 2023]]
+        produtos.append(product)
+        movimentos['93939393936'] = [[1, [5, 6, 2022], '17:23', 6284.0], [0, [5, 6, 2022], '17:23', 4662.33]]
+    
+    #conteudo(clientes, produtos, movimentos)
     #clientes = []
     #produtos = []
     #movimentos = {}
@@ -771,7 +766,6 @@ def main():
     produtos = lerProdutos()
     movimentos = lerMovimentos()
     relatorios = []
-    #conteudo(clientes, produtos, movimentos)
     while True:
         system('cls')
         print("╔════     .     *      -   .     +    .     ════╗")
