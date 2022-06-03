@@ -83,6 +83,7 @@ def menu(x, clientes, produtos, movimentos):
         elif x == '2': excluirProduto(lista); arquivaProduto(lista)
         print()
     
+    # Declaração da função menu
     while True:
         system('cls')
         print("=================== ANDROMEDA ===================")
@@ -307,7 +308,8 @@ def data():
                 return False
         else:
             return True
-    
+     
+    # Declaração da função data
     lista = []
     flag = False
     while not flag:
@@ -353,6 +355,7 @@ def cadastraCliente(clientes):
                 lista.append(tel)
         return lista
     
+    # Declaração da função cadastraCliente
     form = []
     cpf = digitos(input("CPF: "))
     if percorreLista(cpf, clientes) == -1:                                             # Teste para checar se o cpf já
@@ -457,6 +460,7 @@ def alteraCliente(clientes):
         else: 
             print("\n", "Inválido!\n".center(30));                                          system('pause')
     
+    # Declaração da função alteraCliente
     cpf = digitos(input("Digite o CPF: "))
     cliente = percorreLista(cpf, clientes) 
     if cliente == -1:
@@ -892,18 +896,18 @@ def main():
         clientes.append(client)
         product = ["93", "Algo_muito_específico", "23.0", 69.87, 2.3, [23, 7, 1993]]
         produtos.append(product)
-        product = ["23", "Algo_muito_específico", "23.0", 69.87, 2.3, [9, 11, 2023]]
+        product = ["23", "O_Cao_Sagrado", "23.0", 69.87, 2.3, [9, 11, 2023]]
         produtos.append(product)
-        movimentos['93939393936'] = [[1, [5, 6, 2022], '17:23', 6284.0], [0, [5, 6, 2022], '17:23', 4662.33]]
+        movimentos['93939393936'] = [[1, [5, 6, 2021], '17:23', 6284.0], [0, [6, 6, 2021], '17:23', 4662.33]]
     
+    # Bloco para gerar conteúdo sem arquivos
     #conteudo(clientes, produtos, movimentos)
-    #clientes = []
-    #produtos = []
-    #movimentos = {}
-    clientes = lerClientes()
-    produtos = lerProdutos()
+    #clientes = []; produtos = []; movimentos = {}
+
+    # Bloco para criar listas para receber o conteúdo dos arquivos
+    clientes   = lerClientes()
+    produtos   = lerProdutos()
     movimentos = lerMovimentos()
-    relatorios = []
     while True:
         system('cls')
         print("╔════     .     *      -   .     +    .     ════╗")
