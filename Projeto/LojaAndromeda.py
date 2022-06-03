@@ -111,7 +111,7 @@ def menu(x, clientes, produtos, movimentos):
                 subMenu_02(opc, x, clientes, produtos, movimentos)
 
 # Submenu de relatórios
-def menuRelatorios(clientes, produtos, relatorios):
+def menuRelatorios(clientes, produtos, movimentos):
     while True:
         system('cls')
         print("=================== ANDROMEDA ===================")
@@ -131,6 +131,9 @@ def menuRelatorios(clientes, produtos, relatorios):
             system('pause')
         if opc == '2':
             relatorioValidade(produtos)
+            system('pause')
+        if opc == '3':
+            relatorioMovimentos(clientes, produtos, movimentos)
             system('pause')
 
 # Função para ler um elemento da lista de clientes
@@ -181,24 +184,24 @@ def listaProduto(produtos, i):
     print("========================================")
 
 # Função para ler um elemento da lista de compra/venda
-def listaMovimento(movimentos, i):
-    #print(i, ":", movimentos[i])
-    print("CPF:", end=" ")
-    for j in range(len(i)):
-        print(i[j], end="")
+def listaMovimento(movimentos, cpf):
+    #print(cpf, ":", movimentos[cpf])
+    print("CPF :", end=" ")
+    for j in range(len(cpf)):
+        print(cpf[j], end="")
         if   j == 2: print(".", end="")
         elif j == 5: print(".", end="")
         elif j == 8: print("/", end="")
     print()
-    for j in range(len(movimentos[i])):
-        print("\n", "PRODUTO {n:02n}".format(n = movimentos[i][j][0]+1).center(36))
+    for j in range(len(movimentos[cpf])):
+        print("\n", "PRODUTO {n:02n}".format(n = movimentos[cpf][j][0]+1).center(36))
         print("Data da Compra     :", end=" ")
         for k in range(3):
-            print(f"{movimentos[i][j][1][k]:02n}", end="")
+            print(f"{movimentos[cpf][j][1][k]:02n}", end="")
             if k == 2: print()
             else: print("/", end="")
-        print("Hora               :", movimentos[i][j][2])
-        print(f"Valor             R$ {movimentos[i][j][3]:.2f}")
+        print("Hora               :", movimentos[cpf][j][2])
+        print(f"Valor             R$ {movimentos[cpf][j][3]:.2f}")
     print("========================================")
 
 # Função para filtrar uma string para int
@@ -386,7 +389,7 @@ def cadastraMovimento(clientes, produtos, movimentos):
             else:
                 form  = []
                 prod  = produto;                                                form.append(prod)        
-                print("Data de Hoje:")
+                print("Data da Compra:")
                 date  = data();                                                 form.append(date)
                 hora  = input("Hora: ");                                        form.append(hora)
                 qtd   = float(input("Quantidade: "))
@@ -712,14 +715,14 @@ def arquivaCliente(clientes):
 def arquivaProduto(produtos):
     arq = open("TESTE_P.txt", "w")
     for produto in produtos:
-        arq.write("0 "   +     produto[0]      + "\n")
-        arq.write("1 "   +     produto[1]      + "\n")
-        arq.write("2 "   +     produto[2]      + "\n")
-        arq.write("3 "   + str(produto[3])     + "\n")
-        arq.write("4 "   + str(produto[4])     + "\n")
-        arq.write("5 0 " + str(produto[5][0])  + "\n")
-        arq.write("5 1 " + str(produto[5][1])  + "\n")
-        arq.write("5 2 " + str(produto[5][2])  + "\n")
+        arq.write("0 "   +     produto[0]                   + "\n")
+        arq.write("1 "   +     produto[1].replace(" ", "_") + "\n")
+        arq.write("2 "   +     produto[2]                   + "\n")
+        arq.write("3 "   + str(produto[3])                  + "\n")
+        arq.write("4 "   + str(produto[4])                  + "\n")
+        arq.write("5 0 " + str(produto[5][0])               + "\n")
+        arq.write("5 1 " + str(produto[5][1])               + "\n")
+        arq.write("5 2 " + str(produto[5][2])               + "\n")
         arq.write("-1\n")
     arq.close()
 
@@ -762,16 +765,16 @@ def relatorioTelefones(clientes):
 # Função para gerar o relatório de validade
 def relatorioValidade(produtos):
     system('cls')
-    hoje = dt.datetime.now()
-    print("Hoje:", hoje.strftime("%A, %d %B %Y"))
+    Hoje = dt.datetime.now()
+    print("Hoje:", Hoje.strftime("%A, %d %B %Y"))
     print("\nPRODUTOS VENCIDOS")
 
     # Solução um pouco menos elegante, porém "sem" orientação a objetos
     #
     # Este primeiro bloco recebe a data do sistema
-    # dia = str(hoje).split()[0].split("-")[2]
-    # mes = str(hoje).split()[0].split("-")[1]
-    # ano = str(hoje).split()[0].split("-")[0]
+    # dia = str(Hoje).split()[0].split("-")[2]
+    # mes = str(Hoje).split()[0].split("-")[1]
+    # ano = str(Hoje).split()[0].split("-")[0]
     #
     # flag = True
     # for produto in produtos:
@@ -796,8 +799,8 @@ def relatorioValidade(produtos):
 
     reg = True
     for produto in produtos:
-        dataValidade = dt.datetime(day = produto[5][0], month = produto[5][1], year = produto[5][2])
-        dif = str(hoje - dataValidade).split()
+        DataValidade = dt.datetime(day = produto[5][0], month = produto[5][1], year = produto[5][2])
+        dif = str(Hoje - DataValidade).split()
         if int(dif[0]) > 0:
             print("\nVenceu há:", dif[0], "dias\n")
             listaProduto(produtos, produtos.index(produto))
@@ -805,6 +808,78 @@ def relatorioValidade(produtos):
     if reg:
         print("\nNão há produtos vencidos!")
     
+    print()
+
+# Função para gerar o relatório de vendas por data
+def relatorioMovimentos(clientes, produtos, movimentos):
+    # Função para filtrar uma string para int com negativo
+    def digito(array):
+        novoArray = ""
+        if not array.isdigit():
+            for i in array:
+                if i in string.digits or i == '-':
+                    novoArray += i
+            return novoArray
+        else:
+            return array
+
+    system('cls')
+    Hoje = dt.datetime.now()
+    print("Hoje:", Hoje.strftime("%A, %d %B %Y"))
+    print("\nEste relatório mostra as vendas realizadas dentro de um certo período")
+    print("\nData inicial")
+    data1 = data()
+    DataInicial = dt.datetime(day = data1[0], month = data1[1], year = data1[2])
+    opc = input("\nData final [pressione 0 para inserir a data de Hoje, ou Enter para continuar] ")
+    if opc == '0':
+        #DataFinal = dt.datetime(year=int(str(Hoje.year)), month=int(str(Hoje.month)), day=int(str(Hoje.day)), hour=0, minute=0, second=0, microsecond=0)
+        DataFinal = Hoje
+        dif = str(DataFinal - DataInicial).split()
+    else:
+        data2 = data()
+        DataFinal = dt.datetime(day = data2[0], month = data2[1], year = data2[2])
+        dif = str(DataFinal - DataInicial).split()
+    
+    if int(digitos(dif[0])) < 0:
+        print("\n", "Datas digitadas são inválidas!".center(30))
+    else:
+        system('cls')
+        print("Data inicial :", DataInicial.strftime("%A %d %B %Y"))
+        print("Data final   :",   DataFinal.strftime("%A %d %B %Y"))
+        print("\n==============================================")
+        for cpf in movimentos.keys():
+            flag = True
+            for movimento in movimentos[cpf]:
+                DataMovimento = dt.datetime(day = movimento[1][0], month = movimento[1][1], year = movimento[1][2])
+                difInicial = int(digito(str(DataInicial - DataMovimento).split()[0]))
+                difFinal   = int(digito(str(DataFinal   - DataMovimento).split()[0]))
+                if difInicial <= 0 and difFinal >= 0:
+                    if flag:
+                        i = percorreLista(cpf, clientes)
+                        print(f"CLIENTE {i+1:02n}".center(40))
+                        print()
+                        print("Nome:", clientes[i][1].replace("_", " "))
+                        print("CPF :", end=" ")
+                        for j in range(len(cpf)):
+                            print(cpf[j], end="")
+                            if   j == 2: print(".", end="")
+                            elif j == 5: print(".", end="")
+                            elif j == 8: print("/", end="")
+                        print()
+                        flag = False
+                    print()
+                    print("PRODUTO {n:02n}".format(n = movimento[0]+1).center(40))
+                    print("Código             :", produtos[movimento[0]][0])
+                    print("Descrição          :", produtos[movimento[0]][1].replace("_", " "))
+                    print("Data da Compra     :", end=" ")
+                    for k in range(3):
+                        print(f"{movimento[1][k]:02n}", end="")
+                        if k == 2: print()
+                        else: print("/", end="")
+                    print("Hora               :", movimento[2])
+                    print(f"Valor             R$ {movimento[3]:.2f}")
+            if not flag:
+                print("==============================================")
     print()
 
 # Declaração da função main()
@@ -846,7 +921,7 @@ def main():
         opc = input("Escolha: ")
         if   opc == '0': return 0
         elif opc >= '1' and opc <= '3': menu(opc, clientes, produtos, movimentos)
-        elif opc == '4': menuRelatorios(clientes, produtos, relatorios)
+        elif opc == '4': menuRelatorios(clientes, produtos, movimentos)
 
 # Chamada do Programa
 main()
