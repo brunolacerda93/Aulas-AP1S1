@@ -215,6 +215,17 @@ def digitos(array):
     else:
         return array
 
+# Função para filtrar uma string para int com negativo
+def digito(array):
+    novoArray = ""
+    if not array.isdigit():
+        for i in array:
+            if i in string.digits or i == '-':
+                novoArray += i
+        return novoArray
+    else:
+        return array
+
 # Função para filtrar uma string para float
 def floating(array):
     novoArray = ""
@@ -742,7 +753,7 @@ def arquivaMovimento(movimentos):
         arq.write("-2\n")
     arq.close()
 
-# Função para gerar o relatório de clientes/telefones
+# Função para gerar o relatório de clientes por telefones
 def relatorioTelefones(clientes):
     n = 'a'
     while not n.isdigit():
@@ -801,7 +812,7 @@ def relatorioValidade(produtos):
     for produto in produtos:
         DataValidade = dt.datetime(day = produto[5][0], month = produto[5][1], year = produto[5][2])
         dif = str(Hoje - DataValidade).split()
-        if int(dif[0]) > 0:
+        if int(digito(dif[0])) > 0:
             print("\nVenceu há:", dif[0], "dias\n")
             listaProduto(produtos, produtos.index(produto))
             reg = False
@@ -812,17 +823,6 @@ def relatorioValidade(produtos):
 
 # Função para gerar o relatório de vendas por data
 def relatorioMovimentos(clientes, produtos, movimentos):
-    # Função para filtrar uma string para int com negativo
-    def digito(array):
-        novoArray = ""
-        if not array.isdigit():
-            for i in array:
-                if i in string.digits or i == '-':
-                    novoArray += i
-            return novoArray
-        else:
-            return array
-
     system('cls')
     Hoje = dt.datetime.now()
     print("Hoje:", Hoje.strftime("%A, %d %B %Y"))
@@ -840,7 +840,7 @@ def relatorioMovimentos(clientes, produtos, movimentos):
         DataFinal = dt.datetime(day = data2[0], month = data2[1], year = data2[2])
         dif = str(DataFinal - DataInicial).split()
     
-    if int(digitos(dif[0])) < 0:
+    if int(digito(dif[0])) < 0:
         print("\n", "Datas digitadas são inválidas!".center(30))
     else:
         system('cls')
