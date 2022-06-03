@@ -5,6 +5,7 @@
 # Bibliotecas
 from os import system
 import string
+import datetime as dt
 
 # Submenu genérico
 def menu(x, clientes, produtos, movimentos):
@@ -110,7 +111,7 @@ def menu(x, clientes, produtos, movimentos):
                 subMenu_02(opc, x, clientes, produtos, movimentos)
 
 # Submenu de relatórios
-def menuRelatorios(relatorios):
+def menuRelatorios(clientes, produtos, relatorios):
     while True:
         system('cls')
         print("=================== ANDROMEDA ===================")
@@ -125,6 +126,12 @@ def menuRelatorios(relatorios):
         opc = input("Escolha: ")
         if opc == '0':
             return 0
+        if opc == '1':
+            relatorioTelefones(clientes)
+            system('pause')
+        if opc == '2':
+            relatorioValidade(produtos)
+            system('pause')
 
 # Função para ler um elemento da lista de clientes
 def listaCliente(clientes, i):
@@ -194,7 +201,7 @@ def listaMovimento(movimentos, i):
         print(f"Valor             R$ {movimentos[i][j][3]:.2f}")
     print("========================================")
 
-# Função para filtrar em uma string para int
+# Função para filtrar uma string para int
 def digitos(array):
     novoArray = ""
     if not array.isdigit():
@@ -205,7 +212,7 @@ def digitos(array):
     else:
         return array
 
-# Função para filtrar em uma string para float
+# Função para filtrar uma string para float
 def floating(array):
     novoArray = ""
     if not array.isdigit():
@@ -705,9 +712,9 @@ def arquivaCliente(clientes):
 def arquivaProduto(produtos):
     arq = open("TESTE_P.txt", "w")
     for produto in produtos:
-        arq.write("0 "   + produto[0]          + "\n")
-        arq.write("1 "   + produto[1]          + "\n")
-        arq.write("2 "   + produto[2]          + "\n")
+        arq.write("0 "   +     produto[0]      + "\n")
+        arq.write("1 "   +     produto[1]      + "\n")
+        arq.write("2 "   +     produto[2]      + "\n")
         arq.write("3 "   + str(produto[3])     + "\n")
         arq.write("4 "   + str(produto[4])     + "\n")
         arq.write("5 0 " + str(produto[5][0])  + "\n")
@@ -731,6 +738,74 @@ def arquivaMovimento(movimentos):
             arq.write("-1\n")
         arq.write("-2\n")
     arq.close()
+
+# Função para gerar o relatório de clientes/telefones
+def relatorioTelefones(clientes):
+    n = 'a'
+    while not n.isdigit():
+        system('cls')
+        print("Este relatório mostra os clientes que possuem N ou mais telefones")
+        n = digitos(input("Digite N: "))
+        print("\n========================================")
+        if n == "":
+            print("\n", "Inválido!".center(30))
+        else:
+            reg = True
+            for cliente in clientes:
+                if len(cliente[6]) >= int(n):
+                    listaCliente(clientes, clientes.index(cliente))
+                    reg = False
+            if reg:
+                print("Não há nenhum cliente com", n, "telefones")
+    print()
+
+# Função para gerar o relatório de validade
+def relatorioValidade(produtos):
+    system('cls')
+    hoje = dt.datetime.now()
+    print("Hoje:", hoje.strftime("%A, %d %B %Y"))
+    print("\nPRODUTOS VENCIDOS")
+
+    # Solução um pouco menos elegante, porém "sem" orientação a objetos
+    #
+    # Este primeiro bloco recebe a data do sistema
+    # dia = str(hoje).split()[0].split("-")[2]
+    # mes = str(hoje).split()[0].split("-")[1]
+    # ano = str(hoje).split()[0].split("-")[0]
+    #
+    # flag = True
+    # for produto in produtos:
+    #    reg = True
+    #    difAno = int(ano) - produto[5][2]
+    #    difMes = int(mes) - produto[5][1]
+    #    difDia = int(dia) - produto[5][0]
+    #    if difAno == 0:
+    #        if difMes == 0:
+    #            if difDia > 0:
+    #                reg = False
+    #        elif difMes > 0:
+    #            reg = False
+    #    elif difAno > 0:
+    #        reg = False
+    #    if not reg:
+    #        print()
+    #        listaProduto(produtos, produtos.index(produto))
+    #        flag = False
+    # if flag:
+    #    print("\nNão há produtos vencidos!")
+
+    reg = True
+    for produto in produtos:
+        dataValidade = dt.datetime(day = produto[5][0], month = produto[5][1], year = produto[5][2])
+        dif = str(hoje - dataValidade).split()
+        if int(dif[0]) > 0:
+            print("\nVenceu há:", dif[0], "dias\n")
+            listaProduto(produtos, produtos.index(produto))
+            reg = False
+    if reg:
+        print("\nNão há produtos vencidos!")
+    
+    print()
 
 # Declaração da função main()
 def main():
@@ -771,7 +846,7 @@ def main():
         opc = input("Escolha: ")
         if   opc == '0': return 0
         elif opc >= '1' and opc <= '3': menu(opc, clientes, produtos, movimentos)
-        elif opc == '4': menuRelatorios(relatorios)
+        elif opc == '4': menuRelatorios(clientes, produtos, relatorios)
 
 # Chamada do Programa
 main()
