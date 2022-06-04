@@ -9,55 +9,42 @@ import datetime as dt
 
 # Submenu genérico
 def menu(x, clientes, produtos, movimentos):
-    # Opções do submenu para clientes/produtos - decisão
-    def subMenu_01(opc, x, lista):
+    # Opções do submenu - decisão
+    def subMenu(opc, x, clientes, produtos, movimentos):
         match opc:
             case '1':
-                listaTodos(x, lista);   system('pause')
+                listaTodos(x, clientes, produtos, movimentos);      system('pause')
             case '2':
-                listaUm(x, lista);      system('pause')
+                listaUm(x, clientes, produtos, movimentos);         system('pause')
             case '3':
-                incluir(x, lista);      system('pause')
+                incluir(x, clientes, produtos, movimentos);         system('pause')
             case '4':
-                alterar(x, lista)
+                alterar(x, clientes, produtos, movimentos)
             case '5':
-                excluir(x, lista);      system('pause')
-            case _:
-                return 0
-
-    # Opções do submenu para compra/venda - decisão
-    def subMenu_02(opc, x, clientes, produtos, movimentos):
-        match opc:
-            case '1':
-                listaTodos(x, movimentos);                          system('pause')
-            case '2':
-                listaUm(x, movimentos);                             system('pause')
-            case '3':
-                cadastraMovimento(clientes, produtos, movimentos);  system('pause')
-            case '4':
-                alteraMovimento(clientes, produtos, movimentos);    arquivaMovimento(movimentos)
-            case '5':
-                excluirMovimento(clientes, movimentos);             system('pause')
+                excluir(x, clientes, produtos, movimentos);         system('pause')
             case _:
                 return 0
     
     # Função para leitura completa das listas
-    def listaTodos(x, lista):
+    def listaTodos(x, clientes, produtos, movimentos):
         print("========================================")
         if x == '1':
-            for i in range(len(lista)):
-                listaCliente(lista, i)
+            for i in range(len(clientes)):
+                listaCliente(clientes, i)
         elif x == '2':
-            for i in range(len(lista)):
-                listaProduto(lista, i)
+            for i in range(len(produtos)):
+                listaProduto(produtos, i)
         elif x == '3':
-            for i in lista:
-                listaMovimento(lista, i)
+            for cpf in movimentos:
+                listaMovimento(movimentos, cpf)
         print()
     
     # Função para leitura de elemento individual
-    def listaUm(x, lista):
-        i = int(input("Digite o elemento: "))
+    def listaUm(x, clientes, produtos, movimentos):
+        if   x == '1': lista = clientes
+        elif x == '2': lista = produtos
+        elif x == '3': lista = movimentos
+        i = int(digitos(input("Digite o elemento: ")))
         print("\n========================================")
         if i <= len(lista) and i > 0:
             if   x == '1': listaCliente(lista, i-1)
@@ -67,20 +54,23 @@ def menu(x, clientes, produtos, movimentos):
         print()
     
     # Função para incluir elementos - decisão
-    def incluir(x, lista):
-        if   x == '1': cadastraCliente(lista); arquivaCliente(lista)
-        elif x == '2': cadastraProduto(lista); arquivaProduto(lista)
+    def incluir(x, clientes, produtos, movimentos):
+        if   x == '1': cadastraCliente(clientes);                           arquivaCliente(clientes)
+        elif x == '2': cadastraProduto(produtos);                           arquivaProduto(produtos)
+        elif x == '3': cadastraMovimento(clientes, produtos, movimentos);   arquivaMovimento(movimentos)
         print()
     
     # Função para alterar elementos - decisão
-    def alterar(x, lista):
-        if   x == '1': alteraCliente(lista); arquivaCliente(lista)
-        elif x == '2': alteraProduto(lista); arquivaProduto(lista)
+    def alterar(x, clientes, produtos, movimentos):
+        if   x == '1': alteraCliente(clientes);                         arquivaCliente(clientes)
+        elif x == '2': alteraProduto(produtos);                         arquivaProduto(produtos)
+        elif x == '3': alteraMovimento(clientes, produtos, movimentos); arquivaMovimento(movimentos)
     
     # Função para excluir elementos - decisão
-    def excluir(x, lista):
-        if   x == '1': excluirCliente(lista); arquivaCliente(lista)
-        elif x == '2': excluirProduto(lista); arquivaProduto(lista)
+    def excluir(x, clientes, produtos, movimentos):
+        if   x == '1': excluirCliente(clientes);                arquivaCliente(clientes)
+        elif x == '2': excluirProduto(produtos);                arquivaProduto(produtos)
+        elif x == '3': excluirMovimento(clientes, movimentos);  arquivaMovimento(movimentos)
         print()
     
     # Declaração da função menu
@@ -104,12 +94,7 @@ def menu(x, clientes, produtos, movimentos):
             return 0
         elif opc >= '1' and opc <= '5':
             system('cls')
-            if x == '1':
-                subMenu_01(opc, x, clientes)
-            elif x == '2':
-                subMenu_01(opc, x, produtos)
-            elif x == '3':
-                subMenu_02(opc, x, clientes, produtos, movimentos)
+            subMenu(opc, x, clientes, produtos, movimentos)
 
 # Submenu de relatórios
 def menuRelatorios(clientes, produtos, movimentos):
@@ -117,25 +102,17 @@ def menuRelatorios(clientes, produtos, movimentos):
         system('cls')
         print("=================== ANDROMEDA ===================")
         print("Seja bem vinde ao santuário da Rainha dos Homens\n")
-        print("RELATÓRIOS".center(48))
-        print()
+        print("RELATÓRIOS\n".center(48))
         print("    1 - Clientes por Telefones")
         print("    2 - Produtos Vencidos     ")
         print("    3 - Vendas por Data       ")
         print("    0 - Retornar              ")
         print("\n(👁 ͜ʖ👁 )")
         opc = input("Escolha: ")
-        if opc == '0':
-            return 0
-        if opc == '1':
-            relatorioTelefones(clientes)
-            system('pause')
-        if opc == '2':
-            relatorioValidade(produtos)
-            system('pause')
-        if opc == '3':
-            relatorioMovimentos(clientes, produtos, movimentos)
-            system('pause')
+        if   opc == '0': return 0
+        elif opc == '1': relatorioTelefones(clientes);                         system('pause')
+        elif opc == '2': relatorioValidade(produtos);                          system('pause')
+        elif opc == '3': relatorioMovimentos(clientes, produtos, movimentos);  system('pause')
 
 # Função para ler um elemento da lista de clientes
 def listaCliente(clientes, i):
@@ -212,9 +189,13 @@ def digitos(array):
         for i in array:
             if i in string.digits:
                 novoArray += i
-        return novoArray
     else:
         return array
+
+    if array == "" or novoArray == "":
+        return 0
+    else:
+        return novoArray
 
 # Função para filtrar uma string para int com negativo
 def digito(array):
@@ -223,9 +204,13 @@ def digito(array):
         for i in array:
             if i in string.digits or i == '-':
                 novoArray += i
-        return novoArray
     else:
         return array
+
+    if array == "" or novoArray.replace("-", "") == "":
+        return 0
+    else:
+        return novoArray
 
 # Função para filtrar uma string para float
 def floating(array):
@@ -234,9 +219,13 @@ def floating(array):
         for i in array:
             if i in string.digits or i in string.punctuation:
                 novoArray += i
-        return novoArray.replace(",", ".")
     else:
         return array
+
+    if array == "" or novoArray.replace("-", "").replace(",", "").replace(".", "") == "":
+        return 0.0
+    else:
+        return novoArray.replace(",", ".")
 
 # Função para criar a lista de elementos de Datas
 def data():
@@ -246,13 +235,16 @@ def data():
             d = int(dia)
             if d in range(1, 32):
                 return int(dia)
-            else: return 0
+            else: 
+                return 0
+
         elif dia == "": return 15
-        else: return 0
+        else:           return 0
 
     # Função para verificar se o dia e o mês são válidos
     def confirmaMes(dia, mes):
         MESES = {"janeiro": 1, "fevereiro": 2, "março": 3, "marco": 3, "abril": 4, "maio": 5, "junho": 6, "julho": 7, "agosto": 8, "setembro": 9, "outubro": 10, "novembro": 11, "dezembro": 12}
+        
         if mes.isdigit():
             m = int(mes)
             if m in range(1, 13) and checkMes(dia, m):
@@ -264,10 +256,11 @@ def data():
             m = mes.lower()
             if checkMes(dia, MESES[m]):
                 return MESES[m]
-            else: return 0
+            else: 
+                return 0
 
         elif mes == "": return 4
-        else: return 0
+        else:           return 0
 
     # FunÇão para verificar se o ano é válido
     def confirmaAno(dia, mes, ano):
@@ -275,9 +268,11 @@ def data():
             a = int(ano)
             if bissexto(dia, mes, a):
                 return a
-            else: return 0
+            else: 
+                return 0
+
         elif ano == "": return 1452
-        else: return 0
+        else:           return 0
             
     # Função para confirmar se o dia e o mês são válidos
     def checkMes(dia, mes):
@@ -295,7 +290,7 @@ def data():
             if dia <= 29:   return True
             else:           return False
         
-        else: return False
+        else:               return False
 
     # Função para verificar se o ano é bissexto
     def bissexto(dia, mes, ano):
@@ -307,7 +302,7 @@ def data():
             else: 
                 return False
         else:
-            return True
+                return True
      
     # Declaração da função data
     lista = []
@@ -391,7 +386,7 @@ def cadastraProduto(produtos):
 def cadastraMovimento(clientes, produtos, movimentos):
     cpf = digitos(input("CPF: "))
     if percorreLista(cpf, clientes) == -1:
-        print("\n", "Não existe cliente com esse CPF\n".center(30))
+        print("\n", "Não existe cliente com esse CPF".center(30))
     else:
         movimentos[cpf] = []
         opc = 's'
@@ -406,15 +401,11 @@ def cadastraMovimento(clientes, produtos, movimentos):
                 print("Data da Compra:")
                 date  = data();                                                 form.append(date)
                 hora  = input("Hora: ");                                        form.append(hora)
-                qtd   = float(input("Quantidade: "))
+                qtd   = float(floating(input("Quantidade: ")))
                 valor = qtd*(produtos[produto][3] - produtos[produto][4]);      form.append(valor)
                 movimentos[cpf].append(form)
 
             opc = input("Deseja adicionar outro produto? [s/S] ")
-            if opc != 's' and opc != 'S':
-                # Atualiza o arquivo MOVIMENTOS.txt
-                arquivaMovimento(movimentos)
-    print()
 
 # Função para alterar Clientes
 def alteraCliente(clientes):
@@ -425,6 +416,7 @@ def alteraCliente(clientes):
             novo = input("Digite o novo: ")
             lista[i][j][k] = novo
 
+        # Declaração da função editar
         j = int(x)
         print("\nQual elemento deseja alterar?\n")
         for k in range(len(lista[i][j])):
@@ -548,10 +540,12 @@ def alteraMovimento(clientes, produtos, movimentos):
                     print("\nQual valor deseja alterar?\n")
                     for i in range(len(movimentos[cpf])):
                         print(i+1, "-", movimentos[cpf][i][3])
+                    
                     print("\n(👁 ͜ʖ👁 )")
-                    opc = input("Escolha: ")
-                    if opc.isdigit() and opc != '0':
-                        k = int(opc)-1
+                    item = input("Escolha: ")
+                    
+                    if item.isdigit() and item != '0':
+                        k = int(item)-1
                         if k < len(movimentos[cpf]):
                             qtd = int(input("Digite a nova quantidade: "))
                             produto = movimentos[cpf][k][0]
@@ -616,27 +610,22 @@ def excluirMovimento(clientes, movimentos):
     cliente = percorreLista(cpf, clientes)
     if cliente == -1:
         print("Não existe cliente com esse CPF".center(30))
-        print()
     else:
         if cpf in movimentos.keys():
             listaMovimento(movimentos, cpf)
             opc = input("\nDeseja remover esta movimentação do sistema da loja? [s/S] ")
             if opc == 's' or opc == 'S':
                 del movimentos[cpf]
-                arquivaMovimento(movimentos)
                 print("\n", "Removido!".center(30))
-                print()
                 return 0
         else:
-            print("\n","Este cliente não possui movimentações na loja!\n".center(30))
-            system('pause')
+            print("Este cliente não possui movimentações na loja!".center(30))
 
 # Função para ler o arquivo clientes
 def lerClientes():
     LISTA = [0, 1, 3]; clientes = []; cliente = []; data = []; emails = []; telefones = []
 
-    #arq = open("CLIENTES.txt", "r")
-    arq = open("TESTE.txt", "r")
+    arq = open("CLIENTES.txt", "r")
     linha = arq.readline()
     while linha:
         dados = linha.split()
@@ -653,15 +642,13 @@ def lerClientes():
             clientes.append(    cliente[:]);   cliente.clear()
         linha = arq.readline()
     arq.close()
-
     return clientes
 
 # Função para ler o arquivo produtos
 def lerProdutos():
     LISTA = [0, 1, 2]; LISTAF = [3, 4]; produtos = []; produto = []; data = []
 
-    #arq = open("PRODUTOS.txt", "r")
-    arq = open("TESTE_P.txt", "r")
+    arq = open("PRODUTOS.txt", "r")
     linha = arq.readline()
     while linha:
         dados = linha.split()
@@ -674,15 +661,13 @@ def lerProdutos():
             produtos.append(    produto[:]);   produto.clear()
         linha = arq.readline()
     arq.close()
-
     return produtos
 
 # Função para ler o arquivo movimentos
 def lerMovimentos():
     movimentos = {}; movimento = []; data = []; mov = []
 
-    #arq = open("MOVIMENTOS.txt", "r")
-    arq = open("TESTE_M.txt", "r")
+    arq = open("MOVIMENTOS.txt", "r")
     linha = arq.readline()
     while linha:
         dados = linha.split()
@@ -705,12 +690,11 @@ def lerMovimentos():
 
         linha = arq.readline()
     arq.close()
-
     return movimentos
 
 # Função para arquivar o conteúdo de clientes
 def arquivaCliente(clientes):
-    arq = open("TESTE.txt", "w")
+    arq = open("CLIENTES.txt", "w")
     for cliente in clientes:
         arq.write("0 "   +     cliente[0]                   + "\n")
         arq.write("1 "   +     cliente[1].replace(" ", "_") + "\n")
@@ -728,7 +712,7 @@ def arquivaCliente(clientes):
 
 # Função para arquivar o conteúdo de produtos
 def arquivaProduto(produtos):
-    arq = open("TESTE_P.txt", "w")
+    arq = open("PRODUTOS.txt", "w")
     for produto in produtos:
         arq.write("0 "   +     produto[0]                   + "\n")
         arq.write("1 "   +     produto[1].replace(" ", "_") + "\n")
@@ -743,7 +727,7 @@ def arquivaProduto(produtos):
 
 # Função para arquivar o conteúdo de movimentos
 def arquivaMovimento(movimentos):
-    arq = open("TESTE_M.txt", "w")
+    arq = open("MOVIMENTOS.txt", "w")
     for cpf in movimentos.keys():
         for i in range(len(movimentos[cpf])):
             if i == 0: arq.write("0 "  +      cpf             + "\n")
@@ -765,9 +749,7 @@ def relatorioTelefones(clientes):
         print("Este relatório mostra os clientes que possuem N ou mais telefones")
         n = digitos(input("Digite N: "))
         print("\n========================================")
-        if n == "":
-            print("\n", "Inválido!".center(30))
-        else:
+        if n.isdigit():
             reg = True
             for cliente in clientes:
                 if len(cliente[6]) >= int(n):
@@ -775,6 +757,8 @@ def relatorioTelefones(clientes):
                     reg = False
             if reg:
                 print("Não há nenhum cliente com", n, "telefones")
+        else:
+            print("\n", "Inválido!".center(30))
     print()
 
 # Função para gerar o relatório de validade
@@ -810,7 +794,7 @@ def relatorioValidade(produtos):
     #        listaProduto(produtos, produtos.index(produto))
     #        flag = False
     # if flag:
-    #    print("\nNão há produtos vencidos!")
+    #    print("\n", "Não há produtos vencidos!".center(30))
 
     reg = True
     for produto in produtos:
@@ -821,7 +805,7 @@ def relatorioValidade(produtos):
             listaProduto(produtos, produtos.index(produto))
             reg = False
     if reg:
-        print("\nNão há produtos vencidos!")
+        print("\n", "Não há produtos vencidos!".center(30))
     
     print()
 
@@ -831,10 +815,12 @@ def relatorioMovimentos(clientes, produtos, movimentos):
     Hoje = dt.datetime.now()
     print("Hoje:", Hoje.strftime("%A, %d %B %Y"))
     print("\nEste relatório mostra as vendas realizadas dentro de um certo período")
+    
     print("\nData inicial")
     data1 = data()
     DataInicial = dt.datetime(day = data1[0], month = data1[1], year = data1[2])
-    opc = input("\nData final [pressione 0 para inserir a data de Hoje, ou Enter para continuar] ")
+    opc = input("\nData final [digite 0 + Enter para inserir a data de Hoje, ou somente Enter para continuar] ")
+    
     if opc == '0':
         #DataFinal = dt.datetime(year=int(str(Hoje.year)), month=int(str(Hoje.month)), day=int(str(Hoje.day)), hour=0, minute=0, second=0, microsecond=0)
         DataFinal = Hoje
@@ -851,12 +837,14 @@ def relatorioMovimentos(clientes, produtos, movimentos):
         print("Data inicial :", DataInicial.strftime("%A %d %B %Y"))
         print("Data final   :",   DataFinal.strftime("%A %d %B %Y"))
         print("\n==============================================")
+        
         for cpf in movimentos.keys():
             flag = True
             for movimento in movimentos[cpf]:
                 DataMovimento = dt.datetime(day = movimento[1][0], month = movimento[1][1], year = movimento[1][2])
                 difInicial = int(digito(str(DataInicial - DataMovimento).split()[0]))
                 difFinal   = int(digito(str(DataFinal   - DataMovimento).split()[0]))
+                
                 if difInicial <= 0 and difFinal >= 0:
                     if flag:
                         i = percorreLista(cpf, clientes)
@@ -871,6 +859,7 @@ def relatorioMovimentos(clientes, produtos, movimentos):
                             elif j == 8: print("/", end="")
                         print()
                         flag = False
+                    
                     print()
                     print("PRODUTO {n:02n}".format(n = movimento[0]+1).center(40))
                     print("Código             :", produtos[movimento[0]][0])
@@ -882,6 +871,7 @@ def relatorioMovimentos(clientes, produtos, movimentos):
                         else: print("/", end="")
                     print("Hora               :", movimento[2])
                     print(f"Valor             R$ {movimento[3]:.2f}")
+            
             if not flag:
                 print("==============================================")
     print()
@@ -908,6 +898,8 @@ def main():
     clientes   = lerClientes()
     produtos   = lerProdutos()
     movimentos = lerMovimentos()
+    
+    # Tela Principal
     while True:
         system('cls')
         print("╔════     .     *      -   .     +    .     ════╗")
