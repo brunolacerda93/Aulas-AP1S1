@@ -4,15 +4,6 @@ from os import system
 import random
 import string
 
-def menu (opc):
-    match opc:
-        case '1':
-            ex_1(); system('pause')
-        case '2':
-            ex_2(); system('pause')
-        case _:
-            return 0
-
 # Função para filtrar uma string para int
 def digitos(array):
     novoArray = ""
@@ -27,6 +18,15 @@ def digitos(array):
         return 0
     else:
         return novoArray
+
+def menu (opc):
+    match opc:
+        case '1':
+            ex_1(); system('pause')
+        case '2':
+            ex_2(); system('pause')
+        case _:
+            return 0
 
 def ex_1():
     # Inclui pessoa pesquisa
@@ -107,6 +107,10 @@ def ex_1():
         print()
     
     # Corpo da função
+    arq = open("pesquisa.txt", "a")
+    arq.write("masculino 23 não superior\nfeminino 45 sim médio\n")
+    arq.close()
+
     opc = ""
     while opc != 'n' and opc != 'N':
         system('cls')
