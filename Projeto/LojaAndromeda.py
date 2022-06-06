@@ -62,15 +62,15 @@ def menu(x, clientes, produtos, movimentos):
     
     # Função para alterar elementos - decisão
     def alterar(x, clientes, produtos, movimentos):
-        if   x == '1': alteraCliente(clientes);                         arquivaCliente(clientes)
-        elif x == '2': alteraProduto(produtos);                         arquivaProduto(produtos)
-        elif x == '3': alteraMovimento(clientes, produtos, movimentos); arquivaMovimento(movimentos)
+        if   x == '1': alteraCliente(clientes);                             arquivaCliente(clientes)
+        elif x == '2': alteraProduto(produtos);                             arquivaProduto(produtos)
+        elif x == '3': alteraMovimento(clientes, produtos, movimentos);     arquivaMovimento(movimentos)
     
     # Função para excluir elementos - decisão
     def excluir(x, clientes, produtos, movimentos):
-        if   x == '1': excluirCliente(clientes);                arquivaCliente(clientes)
-        elif x == '2': excluirProduto(produtos);                arquivaProduto(produtos)
-        elif x == '3': excluirMovimento(clientes, movimentos);  arquivaMovimento(movimentos)
+        if   x == '1': excluirCliente(clientes);                            arquivaCliente(clientes)
+        elif x == '2': excluirProduto(produtos);                            arquivaProduto(produtos)
+        elif x == '3': excluirMovimento(clientes, movimentos);              arquivaMovimento(movimentos)
         print()
     
     # Declaração da função menu
@@ -355,13 +355,13 @@ def cadastraCliente(clientes):
     cpf = digitos(input("CPF: "))
     if percorreLista(cpf, clientes) == -1:                                             # Teste para checar se o cpf já
         form.append(cpf)                                                               # consta na lista de clientes
-        nome    = input("Nome: ");                          form.append(nome)
+        nome    = input("Nome: ");                              form.append(nome)
         print("Data de Nascimento:")
-        date    = data();                                   form.append(date)
-        sexo    = input("Sexo: ");                          form.append(sexo)
-        salario = float(floating(input("Salário: R$ ")));   form.append(salario)
-        mail    = email();                                  form.append(mail)
-        tel     = telefone();                               form.append(tel)
+        date    = data();                                       form.append(date)
+        sexo    = input("Sexo: ");                              form.append(sexo)
+        salario = float(floating(input("Salário: R$ ")));       form.append(salario)
+        mail    = email();                                      form.append(mail)
+        tel     = telefone();                                   form.append(tel)
         clientes.append(form)
     else: 
         print("\n","Já existe cliente com esse CPF".center(30))
@@ -663,7 +663,7 @@ def lerProdutos():
     arq.close()
     return produtos
 
-# Função para ler o arquivo movimentos
+# Função para ler o arquivo movimentos - 666
 def lerMovimentos():
     movimentos = {}; movimento = []; data = []; mov = []
 
